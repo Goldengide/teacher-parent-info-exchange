@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset("plugins/images/whistle.jpg") }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset("custom-image/logo.png") }}">
     <title>Student Information Exchange</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{ URL::asset("bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
@@ -101,7 +101,9 @@
                     
                     <!-- /.dropdown -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="{{ URL::asset("plugins/images/users/varun.jpg") }}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">{{Auth::user()->firstname}}</b> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> 
+                            <!-- <img src="{{ URL::asset("plugins/images/users/varun.jpg") }}" alt="user-img" width="36" class="img-circle"> -->
+                            <b class="hidden-xs">{{Auth::user()->firstname}}</b> </a>
                         <ul class="dropdown-menu dropdown-user scale-up">
                             <!-- <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
                             <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
@@ -110,13 +112,8 @@
                             <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
                             <li role="separator" class="divider"></li> -->
                             <li>
-                                <a href="{{ url('logout') }}"
-                                            onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                    <i class="fa fa-power-off"></i> Logout</a>
-                                    <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
+                                <a href="{{ url('logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+                                    
                                 </li>
 
                         </ul>

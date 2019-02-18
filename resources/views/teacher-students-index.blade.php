@@ -24,6 +24,7 @@
             <h3 class="box-title m-b-0">Students</h3>
             <p class="text-muted m-b-30">Class: {{$class}}</p>
             <p class="text-muted m-b-30"><a href="{{url('/teacher/students/upload')}}">Upload New Students</a></p>
+            <p class="text-muted m-b-30"><a href="{{url('/teacher/students/new')}}">Add New Students</a></p>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -51,7 +52,7 @@
                     <td>{{$student->email}}</td>
                     <td>{{$student->phone}}</td>
                     <td>
-                      <a href="{{url('#')}}" class="text-primary">Edit</a>
+                      <a href="{{url('teacher/students/'. $student->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
                     </td> 
                     
                   </tr>

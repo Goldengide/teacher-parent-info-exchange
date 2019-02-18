@@ -16,9 +16,18 @@ class TeacherController extends Controller
     //
 
     public function dashboard() {
-    	$noOfStudents = 20; 
+    	$class = ClassTable::where('teacher_id', Auth::user()->id)->value('name');
+    	$noOfStudents = Student::where('class', $class)->count();
+
     	$noOfSubjects = 15;
     	return view('teacher-dashboard', compact('noOfStudents', 'noOfSubjects'));
+    }
+
+    public function dashboard() {
+    	$noOfStudents = Student::count();
+    	$noOfTeachers = User::where('role', 'teacher')->count();
+
+    	return view('teacher-dashboard', compact('noOfStudents', 'noOfTeachers'));
     }
 
     public function students() {
@@ -42,14 +51,14 @@ class TeacherController extends Controller
             'file' => 'required|unique:posts|max:255',
             'body' => 'required',
         ]);
-*/
+        */
     	if($request->hasFile('file')) {
     		if ($file->isValid()) {
     			$filename = $file->getClientOriginalName();
     			$array = explode(".", $filename);
     			$extension = $array[count($array)-1];
     			// return $extension;
-    			if(strtolower($extension) != "txt") {
+    			if(strtolower($extension) != "csv") {
     				return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
     			}
     			else {
@@ -60,7 +69,7 @@ class TeacherController extends Controller
     				$dataColumns = array();
     				array_shift($contentArray);
     				foreach ($contentArray as $contentSubArray) {
-	    				$contentSubArray = explode("\t" ,$contentSubArray);
+	    				$contentSubArray = explode("," ,$contentSubArray);
     					if(count($contentSubArray) == 6) {
 	    					$dataColumns['parent_name'] = $contentSubArray[1]; 
 	    					$dataColumns['student_name'] = $contentSubArray[2]; 
@@ -82,6 +91,52 @@ class TeacherController extends Controller
     				}
     			}
     		}
+    	}
+    }
+
+    public function addStudentPage() {
+    	return view('teacher-students-add');
+    }
+
+    public function addStudentAction(Request $request) {
+    	$student = new Student;
+    	$student->parent_name = $request->parent_name;
+    	$student->student_name = $request->student_name;
+    	$student->phone = $request->phone;
+    	$student->email = $request->email;
+    	$student->class = $request->class;
+
+    	$isSaved = $student->save();
+
+    	if ($isSaved) {
+    		return redirect()->back()->with(['message'=> 'Student Info Successfully Added', 'style' => 'alert-success']);
+    	}
+    	else {
+    		return redirect()->back()->with(['message'=> 'Ooops an error occured', 'style' => 'alert-danger']);
+    	}
+    }
+
+    public function updateStudentPage($id) {
+    	$student = Student::where("id", $id)->first();
+    	return view('teacher-students-edit', compact('student'));
+    }
+
+    public function updateStudentAction(Request $request) {
+    	$id = $request->id;
+    	$student = Student::find($id);
+    	$student->parent_name = $request->parent_name;
+    	$student->student_name = $request->student_name;
+    	$student->phone = $request->phone;
+    	$student->email = $request->email;
+    	$student->class = $request->class;
+
+    	$isSaved = $student->save();
+
+    	if ($isSaved) {
+    		return redirect()->back()->with(['message'=> 'Student Info Successfully Updated', 'style' => 'alert-success']);
+    	}
+    	else {
+    		return redirect()->back()->with(['message'=> 'Ooops an error occured', 'style' => 'alert-danger']);
     	}
     }
 }

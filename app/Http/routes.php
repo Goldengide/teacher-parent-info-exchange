@@ -20,6 +20,7 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@index');
 Route::get('/about', 'HomeController@index');
+Route::post('/login', 'LoginCOntroller@loginPost');
 
 
 # Parent Module
@@ -38,6 +39,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 	Route::get('/students', 'TeacherController@studentsByClass');
 	Route::get('/students/upload', 'TeacherController@uploadStudentsPage');
 	Route::post('/students/upload', 'TeacherController@uploadStudentsAction');
+
+	Route::get('/students/new', 'TeacherController@addStudentPage');
+	Route::post('/students/new', 'TeacherController@addStudentAction');
+
+	Route::get('/students/edit/{id}', 'TeacherController@updateStudentPage');
+	// Route::post('/students/edit', 'TeacherController@updateStudentAction');
 
 });
 

@@ -16,10 +16,10 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">{{$noOfStudents}}</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">{{$noOfTeachers}}</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Students</h4>
+                    <h4 class="text-muted text-center text-info vb">Teachers</h4>
                   </div>
                 </div>
               </div>
@@ -33,10 +33,10 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="">{{22}}</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="">{{$noOfStudents}}</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Subjects</h4>
+                    <h4 class="text-muted text-center text-info vb">Students in School</h4>
                   </div>
                 </div>
               </div>
