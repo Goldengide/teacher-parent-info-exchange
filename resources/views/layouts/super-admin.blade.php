@@ -101,7 +101,9 @@
                     
                     <!-- /.dropdown -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="{{ URL::asset("plugins/images/users/varun.jpg") }}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">{{Auth::user()->firstname}}</b> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> 
+                            <!-- <img src="{{ URL::asset("plugins/images/users/varun.jpg") }}" alt="user-img" width="36" class="img-circle"> -->
+                            <b class="hidden-xs">{{Auth::user()->firstname}}</b> </a>
                         <ul class="dropdown-menu dropdown-user scale-up">
                             <!-- <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
                             <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
@@ -110,13 +112,8 @@
                             <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
                             <li role="separator" class="divider"></li> -->
                             <li>
-                                <a href="{{ url('logout') }}"
-                                            onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                    <i class="fa fa-power-off"></i> Logout</a>
-                                    <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
+                                <a href="{{ url('logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+                                    
                                 </li>
 
                         </ul>
@@ -140,15 +137,15 @@
                     </li>
                   
                     <li>
-                        <a href="inbox.html" class="waves-effect">
-                            <i class="zmdi zmdi-apps zmdi-hc-fw fa-fw"></i> 
-                            <span class="hide-menu">Assessments</span>
+                        <a href="{{url("/teacher/students")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Teachers Module </span>
                         </a>
                     </li>
                     <li>
                         <a href="#" class="waves-effect">
-                            <i class="icon icon-envelope"></i> 
-                            <span class="hide-menu">Subjects 
+                            <i class="icon icon-read"></i> 
+                            <span class="hide-menu">Parents Module 
                                     <span class="label label-rouded label-danger pull-right">2</span>
 
                             </span>
@@ -163,7 +160,6 @@
                             <span class="hide-menu">Logout</span>
                             
                         </a>
-
                     </li>
                 </ul>
             </div>

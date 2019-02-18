@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 	Route::post('/students/new', 'TeacherController@addStudentAction');
 
 	Route::get('/students/edit/{id}', 'TeacherController@updateStudentPage');
-	// Route::post('/students/edit', 'TeacherController@updateStudentAction');
+	Route::post('/students/edit', 'TeacherController@updateStudentAction');
 
 });
 

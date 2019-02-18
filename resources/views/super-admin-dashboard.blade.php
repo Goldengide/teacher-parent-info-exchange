@@ -1,4 +1,4 @@
-@extends('layouts.teachers')
+@extends('layouts.super-admin')
 @section('content')
 <div id="page-wrapper">
     <div class="container-fluid">

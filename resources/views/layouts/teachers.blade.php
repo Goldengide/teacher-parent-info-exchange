@@ -133,7 +133,7 @@
                 <ul class="nav" id="side-menu">
                     
                     <li class="nav-small-cap m-t-10">--- Main Menu</li>
-                    <li> <a href="{{url("tip/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
+                    <li> <a href="{{url("teacher/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
                     </li>
                   
                     <li>
@@ -154,17 +154,13 @@
                     </li>
                    
                     <li>
-                        <a href="{{ url('/logout')}}"
-                            onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit()";
-                                    class="waves-effect">
+                        <a href="{{ url('/logout')}}">
 
                             <i class="icon-logout fa-fw"></i> 
                             <span class="hide-menu">Logout</span>
                             
                         </a>
 
-                      <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
                     </li>
                 </ul>
             </div>

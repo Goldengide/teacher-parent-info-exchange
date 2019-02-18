@@ -23,12 +23,7 @@ class TeacherController extends Controller
     	return view('teacher-dashboard', compact('noOfStudents', 'noOfSubjects'));
     }
 
-    public function dashboard() {
-    	$noOfStudents = Student::count();
-    	$noOfTeachers = User::where('role', 'teacher')->count();
-
-    	return view('teacher-dashboard', compact('noOfStudents', 'noOfTeachers'));
-    }
+    
 
     public function students() {
     	$students = Student::all();

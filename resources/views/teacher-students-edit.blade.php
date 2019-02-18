@@ -41,8 +41,9 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('teacher/students/new')}}">
+                <form class="form-material form-horizontal" method="post" action="{{url('teacher/students/edit')}}">
                   {{csrf_field()}}
+                  <input type="hidden" name="id" value="{{$Student->id}}">
                   <div class="form-group">
                     <label class="col-md-12">Student's Name<span class="help"> e.g Awosanmi Awoyelu</span></label>
                     <div class="col-md-12">
