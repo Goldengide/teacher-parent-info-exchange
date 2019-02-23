@@ -58,7 +58,7 @@
         <nav class="navbar navbar-default navbar-static-top m-b-0">
             <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
                 <div class="top-left-part">
-                    <a class="logo" href="{{url("/teacher/dashbaord")}}"><b>
+                    <a class="logo" href="{{url("/super-admin/dashboard")}}"><b>
                         <!-- <img src="{{ URL::asset("plugins/images/eliteadmin-logo.png") }}" alt="home" /></b> -->
                         <!-- <span class="hidden-xs"><img src="{{ URL::asset("plugins/images/eliteadmin-text.png") }}" alt="home" /></span> -->
                         <span class="">PTIE</span><!-- Find a logo for this one -->
@@ -133,24 +133,49 @@
                 <ul class="nav" id="side-menu">
                     
                     <li class="nav-small-cap m-t-10">--- Main Menu</li>
-                    <li> <a href="{{url("tip/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
+                    <li> <a href="{{url("super-admin/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
                     </li>
                   
                     <li>
                         <a href="{{url("/teacher/students")}}" class="waves-effect">
                             <i class="icon icon-user"></i> 
-                            <span class="hide-menu">Teachers Module </span>
+                            <span class="hide-menu">Teachers <span class="fa arrow"></span></span>
                         </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{url("/teacher/dashboard")}}">Dashboard</a></li>
+                            <li><a href="{{url("/super-admin/teachers")}}">Inventory</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">
-                            <i class="icon icon-read"></i> 
-                            <span class="hide-menu">Parents Module 
-                                    <span class="label label-rouded label-danger pull-right">2</span>
-
-                            </span>
+                        <a href="javascript::void()" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Parents <span class="fa arrow"></span></span>
                         </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{url("/parent/dashboard")}}">Dashboard</a></li>
+                            <li><a href="{{url("/super-admin/parents")}}">Inventory</a></li>
+                        </ul>
                         
+                    </li>
+                     <li>
+                        <a href="{{url("/super-admin/subjects")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Subject</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{url("/super-admin/classes")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Classes</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{url("/super-admin/seasons")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span>Seasons</span>
+                        </a>
                     </li>
                    
                     <li>

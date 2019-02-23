@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResultsTable extends Migration
+class CreateClassSummariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,16 @@ class CreateResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('class_summaries', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('season_id');
             $table->integer('class_id');
-            $table->integer('teacher_id');
             $table->integer('subject_id');
-            $table->integer('assessment');
-            $table->integer('exam_score');
+            $table->integer('average_performance');
+            $table->text('comment');
             $table->timestamps();
         });
+
+        //class_summary = id, class_id, subject_id, average_performance
     }
 
     /**
@@ -32,6 +31,6 @@ class CreateResultsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('results');
+        Schema::drop('class_summaries');
     }
 }

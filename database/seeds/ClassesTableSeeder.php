@@ -12,11 +12,11 @@ class ClassesTableSeeder extends Seeder
     public function run()
     {
         //
-        \DB::table('class_tables')->insert([
+        /*\DB::table('class_tables')->insert([
 
             'name' => '5J',
             'teacher_id' => 1,
             'about' => "I'm still learning"
-        ]);
+        ]);*/
     }
 }

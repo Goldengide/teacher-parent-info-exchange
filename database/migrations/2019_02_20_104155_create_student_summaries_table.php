@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResultsTable extends Migration
+class CreateStudentSummariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,19 +12,20 @@ class CreateResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('student_summaries', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('student_id');
             $table->integer('season_id');
-            $table->integer('class_id');
-            $table->integer('teacher_id');
-            $table->integer('subject_id');
-            $table->integer('assessment');
-            $table->integer('exam_score');
+            $table->integer('percentage');
+            $table->string('best_subject');
+            $table->string('worse_subject');
+            $table->string('comments');
             $table->timestamps();
         });
     }
 
+
+    // student_summary = id, student_id, season, percentage, best_subject, worse_subject, comments
     /**
      * Reverse the migrations.
      *
@@ -32,6 +33,6 @@ class CreateResultsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('results');
+        Schema::drop('student_summaries');
     }
 }

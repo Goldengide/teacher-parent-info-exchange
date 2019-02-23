@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/user/dashboard';
+    protected $redirectTo = '/teacher/dashboard';
 
     /**
      * Create a new controller instance.
@@ -44,7 +44,7 @@ class LoginController extends Controller
         {
             if(Auth::user() && Auth::user()->role == "admin")
             {
-                return redirect('/admin/dashboard');
+                return redirect('/super-admin/dashboard');
             }
             
             if(Auth::user() && Auth::user()->role == "parent")
@@ -55,16 +55,6 @@ class LoginController extends Controller
             if(Auth::user() && Auth::user()->role == "teacher")
             {
                 return redirect('/teacher/dashboard');
-            }
-            
-            if(Auth::user() && Auth::user()->role == 4)
-            {
-                return redirect('/pastor/admin');
-            }
-
-            if(Auth::user() && Auth::user()->role == 5)
-            {
-                return redirect('super/admin');
             }
             
             

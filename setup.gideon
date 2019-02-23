@@ -1,0 +1,17 @@
+Setup
+0. Clear up all the tables
+1. Generate Seasons
+2. Upload Classes
+3. Upload Subjects
+4. Upload Teachers
+5. Assign Teachers to classes 
+6. Upload Students
+6. Extract parents
+4. Upload Result
+
+
+Todo
+prepare all the records according to the format
+1. Ensure seamlessness and good programming ethics such that the templates will be user frienly and at the same the database tables will be served
+
+

@@ -14,6 +14,8 @@
     <!-- Menu CSS -->
     <link href="{{ URL::asset("plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css") }}" rel="stylesheet">
     <link href="{{ URL::asset("plugins/bower_components/morrisjs/morris.css") }}" rel="stylesheet">
+    
+
     @yield('other-styles')
     <!-- morris CSS -->
     <!-- animation CSS -->

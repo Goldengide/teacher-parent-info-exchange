@@ -14,4 +14,10 @@ class ParentController extends Controller
     	$noOfSubjects = 15;
     	return view('parent-dashboard', compact('noOfStudents, noOfSubjects'));
     }
+
+    public function viewChild() {}
+    public function logAComplaintToThePoprietor() {}
+    public function viewChildResult() {}
+    public function message() {}
+    public function 
 }

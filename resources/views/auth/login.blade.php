@@ -24,7 +24,7 @@
         <h3 class="box-title m-b-20">Sign In</h3>
         <div class="form-group">
           <div class="col-xs-12">
-            <input class="form-control" name="email" type="text" required="" placeholder="Username">
+            <input class="form-control" name="email" type="text" required="" placeholder="Email">
           </div>
         </div>
         <div class="form-group">

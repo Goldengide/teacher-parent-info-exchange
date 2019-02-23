@@ -16,6 +16,8 @@ class CreateSeasonsTable extends Migration
             $table->increments('id');
             $table->string('session');
             $table->string('term_no');
+            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('current')->default(0);
             $table->timestamps();
         });
     }
