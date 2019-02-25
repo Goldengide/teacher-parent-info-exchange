@@ -51,9 +51,10 @@
                 @else
                   @foreach($classes as $class)
                   <tr>
-                    <td>{{$class->name}}</td>
-                    <td>{{$class->teacher_id}}</td>
+                    <td>{{strtoupper($class->name)}}</td>
+                    <td>{{$class->teacher($class->teacher_id)}}</td>
                     <td>
+                      <a href="{{url('super-admin/classes/view/'. $class->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
                       <a href="{{url('super-admin/classes/edit/'. $class->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
                     </td> 
                     

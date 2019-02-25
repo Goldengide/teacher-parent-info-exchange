@@ -9,24 +9,33 @@ use App\Http\Requests;
 use DB;
 
 use App\Season;
+use App\Subject;
+use App\Student;
+use App\ClassTable;
+use App\User;
+use App\StudentDetail;
 
 class SeasonController extends Controller
 {
     //
     public function index() {
     	$seasons = Season::all();
-    	$currentSession  = "unset";
-    	$currentTerm  = "unset";
-	    $currentSeason = Season::where('current', 1)->first();
-    	if(count($currentSeason) > 0) {
-	    	$currentSession = $currentSeason->session;
-	    	$currentTerm = $currentSeason->term_no;
-	    	if($currentTerm == 1) {$currentTerm = '1'."<sup>st</sup>";}
-	    	if($currentTerm == 2) {$currentTerm = '2'."<sup>nd</sup>";}
-	    	if($currentTerm == 3) {$currentTerm = '3'."<sup>rd</sup>";}
+    	$activeSession  = "unset";
+    	$activeTerm  = "unset";
+        $noOfStudent = Student::count();
+        $noOfClass = ClassTable::count();
+        $noOfSubject = Subject::count();
+	    $activeSeason = Season::where('status', 1)->first();
+    	if(isset($activeSeason)) {
+	    	$activeSession = $activeSeason->session;
+	    	$activeTerm = $activeSeason->term_no;
+	    	if($activeTerm == 1) {$activeTerm = '1'."<sup>st</sup>";}
+	    	if($activeTerm == 2) {$activeTerm = '2'."<sup>nd</sup>";}
+	    	if($activeTerm == 3) {$activeTerm = '3'."<sup>rd</sup>";}
     	}
-    	return view('pages.super-admin-seasons-index', compact('seasons', 'currentTerm', 'currentSession'));
+    	return view('pages.super-admin-seasons-index', compact('seasons', 'activeTerm', 'activeSession', 'noOfSubject', 'noOfClass', 'noOfStudent'));
     }
+
     public function addPage() {}
     public function addAction(Request $request) {}
     public function edit($id) {}
@@ -37,6 +46,7 @@ class SeasonController extends Controller
     		return "Successfully deleted";
     	}
     }
+
     public function generateSeasonsFromIntervals($start, $stop) {
     	$dataUpload = array();
     	$dataColumns = array();
@@ -59,7 +69,7 @@ class SeasonController extends Controller
     	$operationUpload  = DB::table("seasons")->insert($dataUpload);
 
     	if($operationUpload) {
-    		return (['message'=> 'Seasons Generation Successful', 'style' => 'alert-success']);
+    		return redirect()->back()->with(['message'=> 'Seasons Generation Successful', 'style' => 'alert-success']);
     	}
     }
 
@@ -69,6 +79,82 @@ class SeasonController extends Controller
 
     public function generateSeasonsAction(Request $request) {
 
+    }
+
+    public function launchSeason($id) {  // put option start season in front and make sure ended Season doesn't have it
+
+        $season = Season::where('id', $id)->first();
+        $subjects = Subject::all();
+        $classes = ClassTable::all();
+        $students = Student::all();
+        $studentDetails = array();
+        $eachDetails = array();
+        foreach ($subjects as $subject) {
+            foreach ($students as $student) {
+                $eachDetails['teacher_id'] = 0;     // we can decide to retain teacher thus choosing class and populating them with teacher_id both in student details and classTables. 
+                $eachDetails['subject_id'] = $subject->id;
+                $eachDetails['class_id'] = $student->class_id;
+                $eachDetails['student_id'] = $student->id;
+                $eachDetails['season_id'] = $id;
+                $studentDetails[] = $eachDetails;
+            }
+        }
+        $resetSeasons = DB::table('seasons')->update(['current' => 0]);
+        $activateSeason = DB::table('seasons')->where('id', $id)->update(['current' => 1]);
+        $operationPopulate = DB::table('student_details')->insert($studentDetails);
+
+        if ($season->term == 1) { $season->term == "1<sup>st</sup>"; }
+        if ($season->term == 2) { $season->term == "2<sup>nd</sup>"; }
+        if ($season->term == 3) { $season->term == "3<sup>rd</sup>"; }
+
+
+        $seasonMessage = "The ".$season->term." term of ". $season->session. " Session has been opened";
+
+
+        if($operationPopulate) {
+            return redirect()->back()->with(['message'=> $seasonMessage, 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message'=> "Ooops!!  Something Happened", 'style' => 'alert-danger']);
+        }
+    }
+
+    public function launchNewSeason() { 
+        // Find out how to ping a url using a laravel php command 
+        $season = Season::where('id', $id)->first();
+        $subjects = Subject::all();
+        $classes = ClassTable::all();
+        $students = Student::all();
+        $studentDetails = array();
+        $eachDetails = array();
+        foreach ($subjects as $subject) {
+            foreach ($students as $student) {
+                $eachDetails['teacher_id'] = 0;     // we can decide to retain teacher thus choosing class and populating them with teacher_id both in student details and classTables. 
+                $eachDetails['subject_id'] = $subject->id;
+                $eachDetails['class_id'] = $student->class_id;
+                $eachDetails['student_id'] = $student->id;
+                $eachDetails['season_id'] = $id;
+                $studentDetails[] = $eachDetails;
+            }
+        }
+        $resetSeasons = DB::table('seasons')->update(['status' => 0]);
+        $activateSeason = DB::table('seasons')->where('id', $id)->update(['status' => 1]);
+        $operationPopulate = DB::table('student_details')->insert($studentDetails);
+
+        if ($season->term == 1) { $season->term == "1<sup>st</sup>"; }
+        if ($season->term == 2) { $season->term == "2<sup>nd</sup>"; }
+        if ($season->term == 3) { $season->term == "3<sup>rd</sup>"; }
+
+
+        $seasonMessage = "The ".$season->term." term of ". $season->session. " Session has been opened";
+
+
+        if($operationPopulate) {
+            return redirect()->back()->with(['message'=> $seasonMessage, 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message'=> "Something Happened", 'style' => 'alert-danger']);
+        }
     }
 
     public function activate($id) {
@@ -130,7 +216,16 @@ class SeasonController extends Controller
                 else {
                     return redirect()->back()->with(['message'=> 'Ooops, Something happened', 'style' => 'alert-danger']);
                 }
-            }
         }
+    }
+
+
+    public function check() {
+        $studentDetails = StudentDetail::all();
+        return $studentDetails;
+    }
+
+    
+
 
 }

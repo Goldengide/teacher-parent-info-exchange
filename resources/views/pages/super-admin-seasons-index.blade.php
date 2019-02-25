@@ -22,8 +22,8 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Seasons </h3>
-            <p class="text-muted m-b-30">Current Session: {{$currentSession}}</p>
-            <p class="text-muted m-b-30">Current Term: {!! $currentTerm  !!}</p>
+            <p class="text-muted m-b-30">Current Session: {{$activeSession}}</p>
+            <p class="text-muted m-b-30">Current Term: {!! $activeTerm  !!}</p>
             <p class="text-muted m-b-30"><a href="{{ url('/super-admin/seasons/add')}}">Add New Session</a></p>
             @if(Session::has('message'))
 
@@ -49,7 +49,7 @@
               <tbody>
                 @if(count($seasons) < 1)
                   <!-- <td colspan="4">No Seasons <a href="{{url('/super-admin/seasons/generator')}}">Generate Seasons</a></td> -->
-                  <td colspan="4">No Seasons <a href="{{url('/super-admin/seasons/generate/2010/2019')}}">Generate Seasons</a></td>
+                  <td colspan="4">No Seasons <a href="{{url('/super-admin/seasons/generate/2019/2019')}}">Generate Seasons</a></td>
                 @else
                   @foreach($seasons as $season)
                   <tr>
@@ -58,14 +58,30 @@
                     <td>
                       @if ($season->status == true)
                         Active Season
+                      
+                      @elseif($season->ended == true)
+                        <a href="javascript::void()" class="text-primary">Ended</a>
+                      
                       @else
-                        <a href="{{url('super-admin/season/activate/'. $season->id)}}" class="text-primary"><i class="icon icon-unlock"></i>Activate</a>||
+                        @if($noOfSubject == 0 || $noOfClass == 0 || $noOfStudent == 0)
+                          <a href="javascript::void()" class="text-warning disabled" title="You have to upload the Subjects, Students and Class details before you can activate this season" disabled><i class="icon icon-unlock"></i>Activate</a>
+                        @else 
+                          <a href="{{url('super-admin/season/activate/'. $season->id)}}" class="text-primary" title=""><i class="icon icon-unlock"></i>Activate</a>
+                        @endif
                       @endif
-                      @if ($season->current == true)
-                        Current Season
-                      @else
-                      <a href="{{url('super-admin/season/make-current/'. $season->id)}}" class="text-primary"><i class="icon icon-date"></i>Make-Current</a>
+
+                      @if($season->status) 
+
+                        @if ($season->current == true)
+                           || Ongoing
+                        @elseif($season->ended == true)
+                           || <a href="javascript::void()" class="text-primary">Ended</a>
+                        @else
+                          || <a href="{{url('super-admin/season/launch/'. $season->id)}}" class="text-primary"><i class="icon icon-date"></i>Launch</a>
+                        @endif
+                        
                       @endif
+                    
                     </td> 
 
                   </tr>

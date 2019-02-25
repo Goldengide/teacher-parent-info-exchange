@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Upload Subjects</h3>
+            <h3 class="box-title m-b-0">Upload Result</h3>
             @if(count($errors) > 0)
 
               <ul class="alert alert-danger" style="padding-left: 1em;">
@@ -41,11 +41,11 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/subject/upload')}}" enctype="multipart/form-data">
+                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/result/upload')}}" enctype="multipart/form-data">
                   {{csrf_field()}}
                   <div class="form-group">
                     <label class="col-md-12">Subject File<span class="help"> e.g upload a CSV file.</span> 
-                      <a href="{{ url('/super-admin/template/subject.csv') }}"> Download Format for CSV file</a></label> <!-- will see to you later -->
+                      <a href="{{ url('/super-admin/template/result/'. $season->id  .'/'. $class->id  .'/'. $subject->id  .'/'. trim( $subject->name .'_result_for_'. strtoupper($class->name). '_'. implode('_', explode('/', $season->session)) .'_Term_'. $season->term_no) . '.csv') }}"> Download Format for CSV file</a></label> <!-- will see to you later -->
                     <div class="col-md-12">
                       <input type="file" class="form-control form-control-line" name="file">
                     </div>

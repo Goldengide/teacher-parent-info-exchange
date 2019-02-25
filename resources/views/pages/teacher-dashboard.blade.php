@@ -33,7 +33,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="">{{22}}</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary">{{$noOfSubjects}}</h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Subjects</h4>

@@ -137,25 +137,31 @@
                     </li>
                   
                     <li>
-                        <a href="{{url("/teacher/students")}}" class="waves-effect">
+                        <a href="{{url("/super-admin/teachers")}}" class="waves-effect">
                             <i class="icon icon-user"></i> 
-                            <span class="hide-menu">Teachers <span class="fa arrow"></span></span>
+                            <span class="hide-menu">Teachers <!-- <span class="fa arrow"> --></span></span>
                         </a>
-                        <ul class="nav nav-second-level">
+                        <!-- <ul class="nav nav-second-level">
                             <li><a href="{{url("/teacher/dashboard")}}">Dashboard</a></li>
                             <li><a href="{{url("/super-admin/teachers")}}">Inventory</a></li>
-                        </ul>
+                        </ul> -->
                     </li>
                     <li>
-                        <a href="javascript::void()" class="waves-effect">
+                        <a href="{{url("/super-admin/parents")}}" class="waves-effect">
                             <i class="icon icon-user"></i> 
-                            <span class="hide-menu">Parents <span class="fa arrow"></span></span>
+                            <span class="hide-menu">Parents <!-- <span class="fa arrow"> --></span></span>
                         </a>
-                        <ul class="nav nav-second-level">
+                        <!-- <ul class="nav nav-second-level">
                             <li><a href="{{url("/parent/dashboard")}}">Dashboard</a></li>
                             <li><a href="{{url("/super-admin/parents")}}">Inventory</a></li>
-                        </ul>
+                        </ul> -->
                         
+                    </li>
+                    <li>
+                        <a href="{{url("/super-admin/students/all")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Students</span>
+                        </a>
                     </li>
                      <li>
                         <a href="{{url("/super-admin/subjects")}}" class="waves-effect">

@@ -1,4 +1,4 @@
-@extends('layouts.super-admin')
+@extends('layouts.teachers')
 @section('content')
   <!-- Page Content -->
   <div id="page-wrapper">
@@ -10,9 +10,9 @@
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
-            <li><a href="{{ url('/super-admin/dashboard')}}">Dashboard</a></li>
+            <!-- <li><a href="#">Dashboard</a></li> -->
             <!-- <li><a href="#">Teacher</a></li> -->
-            <li class="active">{{$activeSeason->session}}</li>
+            <!-- <li class="active">Student Index Page</li> -->
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -21,9 +21,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
-            <h3 class="box-title m-b-0">Parents</h3>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/parent/extract')}}">Extract Parents</a></p>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/parent/new')}}">Add New Parents</a></p>
+            <h3 class="box-title m-b-0">Parent</h3>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -34,7 +32,7 @@
               <thead>
                 <tr>
                   <th>S/N</th>
-                  <th>Name</th>
+                  <th>Parent Name</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Action</th>
@@ -43,7 +41,7 @@
               <tfoot>
                 <tr>
                   <th>S/N</th>
-                  <th>Teacher Name</th>
+                  <th>Parent Name</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Action</th>
@@ -56,13 +54,12 @@
                   @foreach($parents as $parent)
                   <tr>  <?php $sn++; ?>
                     <td>{{$sn}}</td>
-                    <td>{{ $parent->fullname }}</td>
+                    <td>{{$parent->fullname}}</td>
                     <td>{{$parent->email}}</td>
                     <td>{{$parent->phone}}</td>
                     <td>
-                      <a href="{{url('super-admin/parent/profile/'. $parent->id)}}" class="text-primary"><i class="icon icon-user"></i></a>
-                       | 
-                      <a href="{{url('super-admin/parent/edit/'. $parent->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
+                      <a href="{{url('teacher/parent/profile/'. $parent->id)}}" class="text-primary"><i class="icon icon-user"></i></a>
+                      <!-- <a href="{{url('super-admin/parent/edit/'. $parent->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a> -->
                     </td> 
                     
                   </tr>

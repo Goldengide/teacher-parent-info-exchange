@@ -11,22 +11,41 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use DB;
 use App\Subject;
+use App\User;
 use App\Season;
 use App\Result;
+use App\StudentDetail;
+
 
 class TeacherController extends Controller
 {
     //
 
     public function dashboard() {
-    	$class = ClassTable::where('teacher_id', Auth::user()->id)->first();
-    	$noOfStudents = Student::where('class_id', $class->id)->count();
+        $currentSeason = Season::where('current', true)->first();
+        $classHasTeacher = ClassTable::where('teacher_id', Auth::user()->id)->count();
+        if($classHasTeacher) {
+            $class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+            $sampleStudentId = StudentDetail::where('class_id', $class->id)
+                                ->where('season_id', $currentSeason->id)
+                                ->first()->id;
+            $class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+            $noOfStudents = Student::where('class_id', $class->id)->count();
+            $noOfSubjects = StudentDetail::where('class_id', $class->id)
+                            ->where('season_id', $currentSeason->id)
+                            ->where('student_id', $sampleStudentId)
+                            ->count();
+        }
+        else {
+            $message = "You have not been assigned to a class yet. See the Administrator";
+            $noOfStudents = 0;
+            $noOfSubjects = 0;
+        }
+        // $class == 0 true fasl
 
-    	$noOfSubjects = 15;
     	return view('pages.teacher-dashboard', compact('noOfStudents', 'noOfSubjects'));
     }
 
-    
 
     public function students() {
     	$students = Student::all();
@@ -44,6 +63,8 @@ class TeacherController extends Controller
     }
 
     public function uploadStudentsAction(Request $request) {
+        $teacherId = Auth::user()->id;
+        $class = ClassTable::where('teacher_id', $teacherId)->first();
     	$file = $request->file('file');
 
     	/*$this->validate($request, [
@@ -69,17 +90,18 @@ class TeacherController extends Controller
     				array_shift($contentArray);
     				foreach ($contentArray as $contentSubArray) {
 	    				$contentSubArray = explode("," ,$contentSubArray);
-    					if(count($contentSubArray) == 6) {
+    					if(count($contentSubArray) == 7) {
 	    					$dataColumns['parent_name'] = $contentSubArray[1]; 
 	    					$dataColumns['student_name'] = $contentSubArray[2]; 
-	    					$dataColumns['phone'] = $contentSubArray[3]; 
-                            $dataColumns['entry_class'] = $contentSubArray[4]; 
-	    					$dataColumns['class_id'] = ClassTable::where('name', $contentSubArray[4])->value('id'); 
-	    					$dataColumns['email'] = $contentSubArray[5]; 
+                            $dataColumns['phone'] = $contentSubArray[4]; 
+                            $dataColumns['phone2'] = $contentSubArray[5]; 
+	    					$dataColumns['birthday'] = $contentSubArray[6]; 
+                            $dataColumns['entry_class_id'] = $class->id; 
+	    					$dataColumns['class_id'] = $class->id; 
+	    					$dataColumns['email'] = $contentSubArray[3];
 	    					$dataUpload[] = $dataColumns;
     						
     					}
-    					// return $dataUpload;
 
     				}
 
@@ -104,13 +126,6 @@ class TeacherController extends Controller
         }
 
         return $count;
-    }
-    public function downloadResultTemplate() {
-        $subjectId = $request->subject_id;
-        // $template = "";
-        // $
-        // when the use has uploaded, a file is created called subjectName_ClassName_result
-        // result table will have to contain string for usage purpose too
     }
 
     public function uploadResultPage($subjectId) {
@@ -181,7 +196,8 @@ class TeacherController extends Controller
     public function prepareResult() {}
 
     public function addStudentPage() {
-    	return view('pages.teacher-students-add');
+        $classes = ClassTable::all();
+    	return view('pages.teacher-students-add', compact('classes'));
     }
 
     public function addStudentAction(Request $request) {
@@ -190,12 +206,26 @@ class TeacherController extends Controller
     	$student->student_name = $request->student_name;
     	$student->phone = $request->phone;
     	$student->email = $request->email;
-        $student->entry_class = $request->class;
+        $student->entry_class_id = $request->class_id;
     	$student->class_id = $request->class_id;
 
     	$isSaved = $student->save();
 
     	if ($isSaved) {
+            $season = Season::where('current', true)->first();
+            $subjects = Subject::all();
+            $classes = ClassTable::all();
+            $studentDetails = array();
+            $eachDetails = array();
+            foreach ($subjects as $subject) {
+                    $eachDetails['teacher_id'] = 0;     // we can decide to retain teacher thus choosing class and populating them with teacher_id both in student details and classTables. 
+                    $eachDetails['subject_id'] = $subject->id;
+                    $eachDetails['class_id'] = $student->class_id;
+                    $eachDetails['student_id'] = $student->id;
+                    $eachDetails['season_id'] = $season->id;
+                    $studentDetails[] = $eachDetails;
+            }
+            DB::table('student_details')->insert($studentDetails);
     		return redirect()->back()->with(['message'=> 'Student Info Successfully Added', 'style' => 'alert-success']);
     	}
     	else {
@@ -215,7 +245,6 @@ class TeacherController extends Controller
     	$student->student_name = $request->student_name;
     	$student->phone = $request->phone;
     	$student->email = $request->email;
-    	$student->class = $request->class;
 
     	$isSaved = $student->save();
 
@@ -226,4 +255,27 @@ class TeacherController extends Controller
     		return redirect()->back()->with(['message'=> 'Ooops an error occured', 'style' => 'alert-danger']);
     	}
     }
+
+
+    public function viewStudent($id) {
+        $student = Student::where('id', $id)->first();
+        // $noOfStudents = Student::where('class_id', $class->id)->count();     // $lastSemesterPerformance;
+        return view('pages.teacher-students-profile', compact('student'));
+    }
+
+
+    public function parents() {
+        $parents = User::where('role', 'parent')->get();
+        return view('pages.teacher-parent-index', compact('parents'));
+    }
+
+    public function viewParent($parentId) {
+        $parent = User::where('id', $parentId)->first();
+        $countChildren = Student::where('parent_id', $parentId)->count();
+        $students = Student::where('parent_id', $parentId)->get();
+        // $lastSemesterPerformance;
+        return view('pages.teacher-parent-profile', compact('parent', 'countChildren', 'students'));
+    }
+
+    
 }

@@ -48,26 +48,16 @@
                   <div class="form-group">
                     <label class="col-md-12">Class<span class="help"> e.g J5</span></label>
                     <div class="col-md-12">
-                      <input type="text" class="form-control form-control-line" name="name" value="{{$class->name}}">
+                      <input type="text" class="form-control form-control-line" name="name" value="{{strtoupper($class->name)}}">
                     </div>
                   </div>
                   
-                  
-                  <div class="form-group">
-                    <label class="col-md-12">Assigned Teacher</label>
-                    <div class="col-md-12">
-                      <select class="form-control" name="teacher_id">
-                        @foreach ($teachers as $teacher) 
-                          <option value="{{$teacher->id}}">{{$teacher->firstname}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
                   </div>
                   
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                      <a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-primary">Go Back</a>
                     </div>
                   </div>
                 </form>

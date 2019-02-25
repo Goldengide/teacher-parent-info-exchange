@@ -70,13 +70,10 @@
                   <div class="form-group">
                     <label class="col-md-12">Class</label>
                     <div class="col-md-12">
-                      <select class="form-control" name="class">
-                        <option>1J</option>
-                        <option>2J</option>
-                        <option>3J</option>
-                        <option>4J</option>
-                        <option selected="selected">5J</option>
-                        <option>6J</option>
+                      <select class="form-control" name="class_id">
+                        @foreach ($classes as $class)
+                          <option value="{{$class->id}}">{{strtoupper($class->name)}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
@@ -84,6 +81,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                      <a href="{{url('/teacher/students')}}" class="btn btn-lg btn-primary">Go Back</a>
                     </div>
                   </div>
                 </form>

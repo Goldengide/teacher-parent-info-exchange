@@ -18,6 +18,7 @@ class CreateStudentDetailsTable extends Migration
             $table->integer('teacher_id');
             $table->integer('subject_id');
             $table->integer('class_id');
+            $table->tinyInteger('exceptional_subject');
             $table->integer('season_id');
             $table->timestamps();
         });

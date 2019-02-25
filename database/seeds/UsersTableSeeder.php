@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
             'othernames' => 'Amowogbaje',
             'username' => 'Gideon. A',
             'role' => 'admin',
+            'other_role' => 'engineer',
             'password' => bcrypt('gideon'),
             'email' => 'amowogbajegideon@gmail.com',
             'phone' => '08174007780',

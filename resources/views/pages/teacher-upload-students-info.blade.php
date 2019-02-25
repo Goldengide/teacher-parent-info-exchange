@@ -44,7 +44,8 @@
                 <form class="form-material form-horizontal" method="post" action="{{url('teacher/students/upload')}}" enctype="multipart/form-data">
                   {{csrf_field()}}
                   <div class="form-group">
-                    <label class="col-md-12">Students File<span class="help"> e.g upload a CSV file.</span></label>
+                    <label class="col-md-12">Students File<span class="help"> e.g upload a CSV file.</span>
+                      <a href="{{ url('/teacher/template/student.csv')}}"> Download Format for CSV file</a></label> <!-- will see to you later -->
                     <div class="col-md-12">
                       <input type="file" class="form-control form-control-line" name="file">
                     </div>
@@ -53,6 +54,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                      <a href="{{url('/teacher/students')}}" class="btn btn-lg btn-primary">Go Back</a>
                     </div>
                   </div>
                 </form>

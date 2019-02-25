@@ -22,7 +22,7 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Students</h3>
-            <p class="text-muted m-b-30">Class: {{$class->name}}</p>
+            <p class="text-muted m-b-30">Class: {{strtoupper($class->name)}}</p>
             <p class="text-muted m-b-30"><a href="{{url('/teacher/students/upload')}}">Upload New Students</a></p>
             <p class="text-muted m-b-30"><a href="{{url('/teacher/students/new')}}">Add New Students</a></p>
             @if(Session::has('message'))
@@ -52,6 +52,7 @@
                     <td>{{$student->email}}</td>
                     <td>{{$student->phone}}</td>
                     <td>
+                      <a href="{{url('teacher/students/profile/'. $student->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
                       <a href="{{url('teacher/students/edit/'. $student->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
                     </td> 
                     

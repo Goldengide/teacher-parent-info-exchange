@@ -145,12 +145,16 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{url("/teacher/parents")}}" class="waves-effect">
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Parents </span>
+                        </a>
+                        
+                    </li>
+                    <li>
                         <a href="#" class="waves-effect">
-                            <i class="icon icon-read"></i> 
-                            <span class="hide-menu">Subjects 
-                                    <span class="label label-rouded label-danger pull-right">2</span>
-
-                            </span>
+                            <i class="icon icon-user"></i> 
+                            <span class="hide-menu">Results </span>
                         </a>
                         
                     </li>

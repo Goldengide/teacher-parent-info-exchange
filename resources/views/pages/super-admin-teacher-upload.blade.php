@@ -45,7 +45,7 @@
                   {{csrf_field()}}
                   <div class="form-group">
                     <label class="col-md-12">Teachers File<span class="help"> e.g upload a CSV file.</span> 
-                      <a download="{{ URL::asset('uploads/format/teachers.csv')}}"> Download Format for CSV file</label> <!-- will see to you later -->
+                      <a href="{{ url('/super-admin/template/teacher.csv') }}"> Download Format for CSV file</a></label> <!-- will see to you later -->
                     <div class="col-md-12">
                       <input type="file" class="form-control form-control-line" name="file">
                     </div>

@@ -17,14 +17,14 @@
       @endif
 
       @if (session('message'))
-        <p class="alert-{{session('style')}}" style="color: white">{{ session('message')}}</p>
+        <p class="{{session('style')}}" style="color: white">{{ session('message')}}</p>
       @endif
-      <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ url('login') }}">
+      <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ url('logina') }}">
         {{ csrf_field() }}
         <h3 class="box-title m-b-20">Sign In</h3>
         <div class="form-group">
           <div class="col-xs-12">
-            <input class="form-control" name="email" type="text" required="" placeholder="Email">
+            <input class="form-control" name="phone" type="text" required="" placeholder="Phone">
           </div>
         </div>
         <div class="form-group">

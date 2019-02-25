@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Edit Teacher</h3>
+            <h3 class="box-title m-b-0">Add Teacher</h3>
             @if(count($errors) > 0)
 
               <ul class="alert alert-danger">
@@ -41,7 +41,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/teacher/edit')}}">
+                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/teacher/new')}}">
                   {{csrf_field()}}
                   <input type="hidden" name="id" value="{{$teacher->id}}">
 

@@ -19,10 +19,10 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Upload Subjects</h3>
+            <h3 class="box-title m-b-0">Edit Classes</h3>
             @if(count($errors) > 0)
 
-              <ul class="alert alert-danger" style="padding-left: 1em;">
+              <ul class="alert alert-danger">
 
                   @foreach($errors->all() as $error)
 
@@ -41,19 +41,27 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/subject/upload')}}" enctype="multipart/form-data">
+                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/classes/assign-teacher')}}">
                   {{csrf_field()}}
+                  <input type="hidden" name="id" value="{{$class->id}}">
+                  
+                  
                   <div class="form-group">
-                    <label class="col-md-12">Subject File<span class="help"> e.g upload a CSV file.</span> 
-                      <a href="{{ url('/super-admin/template/subject.csv') }}"> Download Format for CSV file</a></label> <!-- will see to you later -->
+                    <label class="col-md-12">Assigned Teacher</label>
                     <div class="col-md-12">
-                      <input type="file" class="form-control form-control-line" name="file">
+                      <select class="form-control" name="teacher_id">
+                        @foreach ($teachers as $teacher) 
+                          <option value="{{$teacher->id}}">{{$teacher->firstname}}</option>
+                        @endforeach
+                      </select>
                     </div>
+                  </div>
                   </div>
                   
                   <div class="form-group">
                     <div class="col-md-12">
-                      <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                      <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                      <a href="{{url('/super-admin/classes/view/'. $class->id)}}" class="btn btn-lg btn-primary">Go Back</a>
                     </div>
                   </div>
                 </form>
@@ -66,4 +74,10 @@
     <!-- /.container-fluid -->
   </div>
   <!-- /#page-wrapper -->
+  @endsection
+  @section('other-scripts')
+  <script src="{{URL::asset("plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js")}}"></script>
+  <!-- Date range Plugin JavaScript -->
+  <!-- <script src="{{URL::asset("plugins/bower_components/timepicker/bootstrap-timepicker.min.js")}}"></script> -->
+ 
   @endsection

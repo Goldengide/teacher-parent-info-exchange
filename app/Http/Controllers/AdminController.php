@@ -21,6 +21,8 @@ class AdminController extends Controller
     	$noOfStudents = Student::count();
     	$noOfTeachers = User::where('role', 'teacher')->count();
 
+
+
     	return view('pages.super-admin-dashboard', compact('noOfStudents', 'noOfTeachers'));
     }
 
@@ -55,13 +57,20 @@ class AdminController extends Controller
                             $dataColumns['lastname'] = $contentSubArray[1]; 
                             $dataColumns['firstname'] = $contentSubArray[2]; 
                             $dataColumns['othernames'] = $contentSubArray[3]; 
+                            $dataColumns['fullname'] = strtoupper($contentSubArray[1]). ", ". $contentSubArray[2]. " ". $contentSubArray[3]; 
                             $dataColumns['role'] = 'teacher'; 
+                            // $dataColumns['password'] = bcrypt(trim(strtolower($contentSubArray[1]))); 
                             $dataColumns['password'] = bcrypt('lastname'); 
                             $dataColumns['phone'] = $contentSubArray[4]; 
                             $dataColumns['phone2'] = $contentSubArray[5]; 
                             $dataColumns['email'] = $contentSubArray[6]; 
                             $dataColumns['birthdate'] = $contentSubArray[7]; 
                             $dataUpload[] = $dataColumns;
+                            
+                        }
+
+                        else {
+                            return redirect()->back()->with(['message'=> 'Format not correct', 'style' => 'alert-danger']);
                             
                         }
                         // return $dataUpload;
@@ -72,7 +81,7 @@ class AdminController extends Controller
                     $operationUpload  = DB::table("users")->insert($dataUpload);
 
                     if($operationUpload) {
-                        return redirect()->back()->with(['message'=> 'Student Upload Successful', 'style' => 'alert-success']);
+                        return redirect()->back()->with(['message'=> 'Teacher Upload Successful', 'style' => 'alert-success']);
                     }
                 }
             }
@@ -95,10 +104,11 @@ class AdminController extends Controller
 
     public function teachers()  {     //done
     	$teachers = User::where('role', 'teacher')->get();
-    	$countTeachers = User::where('role', 'teacher')->count();
+        $countTeachers = User::where('role', 'teacher')->count();
+    	$classes = ClassTable::all();
         $currentSeason = Season::where('current', 1)->first();
         $activeSeason = Season::where('status', 1)->first();
-    	return view('pages.super-admin-teacher-list', compact('teachers', 'countTeachers', 'currentSeason', 'activeSeason'));
+    	return view('pages.super-admin-teacher-list', compact('teachers', 'countTeachers', 'currentSeason', 'activeSeason', 'classes'));
     }
 
 
@@ -137,10 +147,35 @@ class AdminController extends Controller
         $id = $request->id;
         $class = ClassTable::find($id);
         $class->name = $request->name;
-        $class->teacher_id = $request->teacher_id;
         $isSaved = $class->save();
         if ($isSaved) {
             return redirect()->back()->with(['message' => 'Operation Successful', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Operation Failed', 'style' => 'alert-danger']);
+        }
+    }
+
+    public function viewClass($id) {
+        $class = ClassTable::where('id', $id)->first();
+        $noOfStudents = Student::where('class_id', $class->id)->count();
+        return view('pages.super-admin-class-view', compact('class', 'noOfStudents'));
+    }
+
+    public function assignClassTeacherPage($id) {
+        $class = ClassTable::where('id', $id)->first();
+        $teachers = User::where('role', 'teacher')->get();
+        return view('pages.super-admin-class-assign-teacher', compact('class', 'teachers'));
+    }
+
+    public function assignClassTeacherAction(Request $request) {
+        $id = $request->id;
+        $class = ClassTable::find($id);
+        $class->teacher_id = $request->teacher_id;
+        $updateStudentDetails = DB::table('student_details')->where('class_id', $id)->update(['teacher_id' => $request->teacher_id]);
+        $isSaved = $class->save();
+        if ($isSaved) {
+            return redirect()->back()->with(['message' => $class->teacher($class->teacher_id)->firstname.' has been assigned to Class '. strtoupper($class->name) , 'style' => 'alert-success']);
         }
         else {
             return redirect()->back()->with(['message' => 'Operation Failed', 'style' => 'alert-danger']);
@@ -179,8 +214,12 @@ class AdminController extends Controller
                     foreach ($contentArray as $contentSubArray) {
                         $contentSubArray = explode("," ,$contentSubArray);
                         if(count($contentSubArray) == 2) {
-                            $dataColumns['name'] = $contentSubArray[1]; 
+                            $dataColumns['name'] = trim(strtolower($contentSubArray[1])); 
                             $dataUpload[] = $dataColumns;
+                            
+                        }
+                        else {
+                            return redirect()->back()->with(['message'=> 'Format not correct', 'style' => 'alert-danger']);
                             
                         }
 
@@ -197,6 +236,87 @@ class AdminController extends Controller
                 }
             }
         }
+    }
+
+
+
+
+
+    
+
+    public function uploadStudentsPage() {
+        return view('pages.super-admin-teacher-students-upload');
+    }
+
+    public function uploadStudentsAction(Request $request) {
+        $file = $request->file('file');
+
+        /*$this->validate($request, [
+            'file' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+        */
+        if($request->hasFile('file')) {
+            if ($file->isValid()) {
+                $filename = $file->getClientOriginalName();
+                $array = explode(".", $filename);
+                $extension = $array[count($array)-1];
+                // return $extension;
+                if(strtolower($extension) != "csv") {
+                    return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
+                }
+                else {
+                    $file->move("uploads/datas/", "student.csv");
+                    $content = File::get("uploads/datas/student.csv");
+                    $contentArray = explode("\n", $content);
+                    $dataUpload = array();
+                    $dataColumns = array();
+                    array_shift($contentArray);
+                    foreach ($contentArray as $contentSubArray) {
+                        $contentSubArray = explode("," ,$contentSubArray);
+                        if(count($contentSubArray) == 8) {
+                            $dataColumns['parent_name'] = $contentSubArray[1]; 
+                            $dataColumns['student_name'] = $contentSubArray[2]; 
+                            $dataColumns['phone'] = $contentSubArray[5]; 
+                            $dataColumns['phone2'] = $contentSubArray[6]; 
+                            $dataColumns['entry_class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[3])))->value('id'); 
+                            $dataColumns['class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[3])))->value('id'); 
+                            $dataColumns['email'] = $contentSubArray[4]; 
+                            $dataUpload[] = $dataColumns;
+                            
+                        }
+
+                        else {
+                            return redirect()->back()->with(['message'=> 'Format not correct', 'style' => 'alert-danger']);
+                            
+                        }
+                        // return $dataUpload;
+
+                    }
+
+                    // return ($dataUpload);
+                    $operationUpload  = DB::table("students")->insert($dataUpload);
+
+                    if($operationUpload) {
+                        return redirect()->back()->with(['message'=> 'Student Upload Successful', 'style' => 'alert-success']);
+                    }
+                }
+            }
+        }
+    }
+
+    public function students() {
+        $countClasses = ClassTable::count(); 
+        $students = Student::all();
+        // return $students;
+        return view('pages.super-admin-teacher-students-index', compact('students', 'countClasses'));
+    }
+
+    public function studentsByClass($classId) {
+        $countClasses = ClassTable::count(); 
+        $students = Student::where("class_id", $classId)->get();
+        $class = ClassTable::where('id', $class_id)->first();
+        return view('pages.super-admin-teacher-students-index', compact('students', 'class', 'countClasses'));
     }
 
 
@@ -317,20 +437,20 @@ class AdminController extends Controller
     public function extractParent() {
         $students = Student::all();
         $logs = "";
-        $csvFile = public_path('..\uploads');
+        $logFile = public_path('uploads\log.txt');
+        // return $logFile;
 
         foreach ($students as $student) {
             $userPresent = User::where('phone', $student->phone)->count();
 
             if($userPresent == 0) {
-                DB::table('users')->insert(['fullname' => $student->parent_name, 'phone' => $student->phone, 'phone2' => $student->phone2, 'email' => $student->email, 'password' => $student->id, 'role' => 'parent']);
+                DB::table('users')->insert(['fullname' => $student->parent_name, 'phone' => $student->phone, 'phone2' => $student->phone2, 'email' => $student->email, 'password' => bcrypt($student->phone), 'role' => 'parent']);
             }
 
             else {
-                $log .= $student->name. " was already uploaded";
-                if($handle = fopen($csvFile, 'w')) {
-
-                        (fwrite($handle, $log));
+                $logs .= "- ".$student->parent_name. " was already uploaded  \n";
+                if($handle = fopen($logFile, 'w+')) {
+                        (fwrite($handle, $logs));
 
                 }
             }
@@ -388,6 +508,11 @@ class AdminController extends Controller
                             
                         }
 
+                        else {
+                            return redirect()->back()->with(['message'=> 'Format not correct', 'style' => 'alert-danger']);
+                            
+                        }
+
                     }
 
                     $operationUpload  = DB::table("subjects")->insert($dataUpload);
@@ -401,5 +526,13 @@ class AdminController extends Controller
                 }
             }
         }
+    }
+
+
+    public function uploadResult($seasonId, $classId, $subjectId) {
+        $season = Season::where('id', $seasonId)->first(); 
+        $subject = Subject::where('id', $subjectId)->first(); 
+        $class = ClassTable::where('id', $classId)->first(); 
+        return view('pages.super-admin-result-upload', compact('subject', 'class', 'season'));
     }
 }

@@ -20,12 +20,12 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@index');
 Route::get('/about', 'HomeController@index');
-// Route::post('/login', 'LoginController@loginPost');
+Route::post('/logina', 'LoginController@loginPost');
 
 
 # Parent Module
 Route::group(['middleware' => 'auth', 'prefix' => 'parent'], function() {
-
+// 
 	Route::get('/dashboard', 'ParentController@dashboard');
 
 });
@@ -45,6 +45,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 
 	Route::get('/students/edit/{id}', 'TeacherController@updateStudentPage');
 	Route::post('/students/edit', 'TeacherController@updateStudentAction');
+	Route::get('/students/profile/{id}', 'TeacherController@viewStudent');
+
+
+
+	
+	Route::get('/parents', 'TeacherController@parents');
+	Route::get('/parent/profile/{id}', 'TeacherController@viewParent');
+
+
+	Route::group(['prefix' => 'template'], function(){
+		Route::get('student.csv', 'DownloadController@studentTeacherTemplate');
+
+	});
 
 });
 
@@ -72,9 +85,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
 	Route::get('/teacher/upload', 'AdminController@uploadTeachersPage');
 	Route::post('/teacher/upload', 'AdminController@uploadTeachersAction');
-	Route::get('/student/upload/{id}', 'AdminController@uploadParentPage');
-	Route::post('/student/upload', 'AdminController@uploadParentAction');
 	Route::get('/parent/extract', 'AdminController@extractParent');
+
+	// Students 
+	Route::get('/students/all', 'AdminController@students');
+	Route::get('/students/{id}', 'AdminController@studentsByClass');
+	Route::get('/student/upload', 'AdminController@uploadStudentsPage');
+	Route::post('/student/upload', 'AdminController@uploadStudentsAction');
+	Route::get('/student/new', 'AdminController@addStudentPage');
+	Route::post('/student/new', 'AdminController@addStudentAction');
+	Route::get('/students/edit/{id}', 'AdminController@updateStudentPage');
+	Route::post('/students/edit', 'AdminController@updateStudentAction');
 
 
 	// Classes Upload 
@@ -83,6 +104,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	Route::post('/classes/new', 'AdminController@addClassAction');
 	Route::get('/classes/edit/{id}', 'AdminController@editClass');
 	Route::post('/classes/edit', 'AdminController@editClassAction');
+	Route::get('/classes/view/{id}', 'AdminController@viewClass');
+	Route::get('/classes/assign-teacher/{id}', 'AdminController@assignClassTeacherPage');
+	Route::post('/classes/assign-teacher', 'AdminController@assignClassTeacherAction');
 	Route::get('classes/upload', 'AdminController@classesUploadPage');
 	Route::post('/classes/upload', 'AdminController@classesUpload');
 
@@ -98,7 +122,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
 
 	// Seasons Upload
-
 	Route::get('/seasons', 'SeasonController@index');
 	Route::get('/seasons/generate/{start}/{stop}', 'SeasonController@generateSeasonsFromIntervals');
 	Route::get('/seasons/generator', 'SeasonController@generateSeasonsInterface');
@@ -106,6 +129,24 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	Route::get('/seasons/clear', 'SeasonController@clearSeason');
 	Route::get('/season/activate/{id}', 'SeasonController@activate');
 	Route::get('/season/make-current/{id}', 'SeasonController@makeCurrent');
+	Route::get('/season/launch/{id}', 'SeasonController@launchSeason');
+	Route::get('/season/check', 'SeasonController@check');
+
+
+	// Result Upload
+	Route::get('/result/upload/{seasonId}/{classId}/{subjectId}', 'AdminController@uploadResult');
+
+
+	// Template download 
+	Route::group(['prefix' => 'template'], function(){
+		Route::get('class.csv', 'DownloadController@classTemplate');
+		Route::get('subject.csv', 'DownloadController@subjectTemplate');
+		Route::get('teacher.csv', 'DownloadController@teacherTemplate');
+		Route::get('student.csv', 'DownloadController@studentTemplate');
+		Route::get('/result/{seasonId}/{classId}/{subjectId}/{result}.csv', 'DownloadController@resultTemplate');
+
+
+	});
 
 
 });

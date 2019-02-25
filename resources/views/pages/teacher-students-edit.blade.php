@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Add Students</h3>
+            <h3 class="box-title m-b-0">Edit Students</h3>
             @if(count($errors) > 0)
 
               <ul class="alert alert-danger">
@@ -66,19 +66,6 @@
                     <label class="col-md-12">Email</label>
                     <div class="col-md-12">
                       <input type="text" class="form-control"  name="email" placeholder="Email here" value="{{$student->email}}">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-12">Class</label>
-                    <div class="col-md-12">
-                      <select class="form-control">
-                        <option>1J</option>
-                        <option>2J</option>
-                        <option>3J</option>
-                        <option>4J</option>
-                        <option>5J</option>
-                        <option>6J</option>
-                      </select>
                     </div>
                   </div>
                   
