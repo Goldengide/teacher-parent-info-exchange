@@ -25,5 +25,19 @@ class UsersTableSeeder extends Seeder
             'phone' => '08174007780',
 
         ]);
+
+        
+        \DB::table('users')->insert([
+
+            'firstname' => 'Gideon',
+            'lastname' => 'Amowogbaje',
+            'othernames' => 'Amowogbaje',
+            'username' => 'Gideon. A',
+            'role' => 'admin',
+            'password' => bcrypt('itismyseason1988'),
+            'email' => 'admin@gmail.com',
+            'phone' => '08174007781',
+
+        ]);
     }
 }
