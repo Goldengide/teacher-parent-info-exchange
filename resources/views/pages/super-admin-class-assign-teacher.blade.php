@@ -51,7 +51,7 @@
                     <div class="col-md-12">
                       <select class="form-control" name="teacher_id">
                         @foreach ($teachers as $teacher) 
-                          <option value="{{$teacher->id}}">{{$teacher->firstname}}</option>
+                          <option value="{{$teacher->id}}">{{$teacher->fullname}}</option>
                         @endforeach
                       </select>
                     </div>

@@ -50,7 +50,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">20</h3>
+                    <h3 class="counter text-center m-t-15 text-primary">0</h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Graduating Students</h4>
@@ -67,7 +67,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">30</h3>
+                    <h3 class="counter text-center m-t-15 text-primary">0</h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">New Students</h4>
@@ -109,7 +109,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">98%</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">0%</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Best Overall Score</h4>
@@ -126,7 +126,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h5 class="counter text-center m-t-15 text-primary"><a href="">James, Busola</a></h5>
+                    <h5 class="counter text-center m-t-15 text-primary"><a href=""></a></h5>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Most Effective Teacher</h4>
@@ -144,7 +144,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="">30</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="">0</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">New Messages</h4>

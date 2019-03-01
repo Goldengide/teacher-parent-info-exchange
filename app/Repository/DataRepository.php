@@ -274,6 +274,30 @@ class DataRepository
                         ->header('X-Header-One', 'Header Value');
         }
 
+
+        public function sequenceNumber($no) {
+            $sort = str_split($no);
+            $lastPartOfNo = $sort[count($sort) -1];
+            if( $lastPartOfNo == 1 ) {
+                return $no. "<sup>st</sup>";
+            }
+            elseif($lastPartOfNo == 2) {
+                return $no. "<sup>nd</sup>";
+            }
+            elseif($lastPartOfNo == 3) {
+                return $no. "<sup>rd</sup>";
+            }
+            else {
+                return $no. "<sup>th</sup>";
+            }
+        }
+
+        public function replaceDelimeter($string, $initialDelimeter, $finalDelimeter) {
+            $break = explode($initialDelimeter, $string);
+            $finalString = implode($finalDelimeter, $break);
+            return $finalString;
+        }
+
             /*public function downloadData($tableName, $contentType){
                 $dataRepository = new DataRepository;
                 $dataRepository->tableFromWhichDataIsToBeDownloaded = $tableName;

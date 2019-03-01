@@ -30,7 +30,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h4 class="text-center m-t-15 text-info"><a href="#">Teacher's Details</a></h4>
+                    <h4 class="text-center m-t-15 text-info"><a href="#">Previous Term Performance</a></h4>
                   </div>
                 </div>
               </div>

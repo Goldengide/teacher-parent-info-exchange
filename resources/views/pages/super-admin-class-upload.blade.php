@@ -54,7 +54,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Upload</button>
-                      <a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-primary">Go Back</a>
+                      <a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-outline btn-default">Go Back</a>
                     </div>
                   </div>
                 </form>

@@ -30,50 +30,52 @@
 
             @endif
             <div class="table-responsive">
-            <table id="myTable" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Teacher Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>S/N</th>
-                  <th>Teacher Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Action</th>
-                </tr>
-              </tfoot>
-              <tbody> <?php $sn = 0 ?>
-                @if(count($teachers) < 1)
-                  <td colspan="5">No teacher data has been uploaded so far. Please upload</td>
-                @else
-                  @foreach($teachers as $teacher)
-                  <tr>  <?php $sn++; ?>
-                    <td>{{$sn}}</td>
-                    <td>{{ strtoupper($teacher->lastname)}},  {{$teacher->firstname}}  {{$teacher->othernames}}</td>
-                    <td>{{$teacher->email}}</td>
-                    <td>{{$teacher->phone}}</td>
-                    <td>
-                      <a href="{{url('super-admin/teacher/profile/'. $teacher->id)}}" class="text-primary"><i class="icon icon-user"></i></a>
-                       | 
-                      <a href="{{url('super-admin/teacher/edit/'. $teacher->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
-                    </td> 
-                    
+              <table id="myTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Teacher Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
                   </tr>
-                  @endforeach
-                @endif
-              </tbody>
-            </table>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Teacher Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody> <?php $sn = 0 ?>
+                  @if(count($teachers) < 1)
+                    <td colspan="5">No teacher data has been uploaded so far. Please upload</td>
+                  @else
+                    @foreach($teachers as $teacher)
+                    <tr>  <?php $sn++; ?>
+                      <td>{{$sn}}</td>
+                      <td>{{ strtoupper($teacher->lastname)}},  {{$teacher->firstname}}  {{$teacher->othernames}}</td>
+                      <td>{{$teacher->email}}</td>
+                      <td>{{$teacher->phone}}</td>
+                      <td>
+                        <a href="{{url('super-admin/teacher/profile/'. $teacher->id)}}" class="text-primary"><i class="icon icon-user"></i></a>
+                         | 
+                        <a href="{{url('super-admin/teacher/edit/'. $teacher->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
+                      </td> 
+                      
+                    </tr>
+                    @endforeach
+                  @endif
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
       <!-- /.row -->
 @endsection
 @section('other-scripts')

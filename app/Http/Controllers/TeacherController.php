@@ -26,6 +26,7 @@ class TeacherController extends Controller
         $classHasTeacher = ClassTable::where('teacher_id', Auth::user()->id)->count();
         if($classHasTeacher) {
             $class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+
             $sampleStudentId = StudentDetail::where('class_id', $class->id)
                                 ->where('season_id', $currentSeason->id)
                                 ->first()->id;
@@ -53,6 +54,7 @@ class TeacherController extends Controller
 
     public function studentsByClass() {
     	$class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+        // WE have to catch errors for Teachers that have not been assigned
     	$students = Student::where("class_id", $class->id)->get();
     	return view('pages.teacher-students-index', compact('students', 'class'));
     }
@@ -93,12 +95,13 @@ class TeacherController extends Controller
     					if(count($contentSubArray) == 7) {
 	    					$dataColumns['parent_name'] = $contentSubArray[1]; 
 	    					$dataColumns['student_name'] = $contentSubArray[2]; 
-                            $dataColumns['phone'] = $contentSubArray[4]; 
-                            $dataColumns['phone2'] = $contentSubArray[5]; 
-	    					$dataColumns['birthday'] = $contentSubArray[6]; 
+                            $dataColumns['gender'] = $contentSubArray[3]; 
+	    					$dataColumns['email'] = $contentSubArray[4];
+                            $dataColumns['phone'] = $contentSubArray[5]; 
+                            $dataColumns['phone2'] = $contentSubArray[6]; 
+                            $dataColumns['birthday'] = $contentSubArray[7]; 
                             $dataColumns['entry_class_id'] = $class->id; 
-	    					$dataColumns['class_id'] = $class->id; 
-	    					$dataColumns['email'] = $contentSubArray[3];
+                            $dataColumns['class_id'] = $class->id; 
 	    					$dataUpload[] = $dataColumns;
     						
     					}
@@ -271,9 +274,8 @@ class TeacherController extends Controller
 
     public function viewParent($parentId) {
         $parent = User::where('id', $parentId)->first();
-        $countChildren = Student::where('parent_id', $parentId)->count();
-        $students = Student::where('parent_id', $parentId)->get();
-        // $lastSemesterPerformance;
+        $countChildren = Student::where('parent_name', $parent->fullname)->count();
+        $students = Student::where('parent_name', $parent->fullname)->get();
         return view('pages.teacher-parent-profile', compact('parent', 'countChildren', 'students'));
     }
 

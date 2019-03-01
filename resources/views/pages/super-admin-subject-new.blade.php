@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Add Students</h3>
+            <h3 class="box-title m-b-0">Add Subject</h3>
             @if(count($errors) > 0)
 
               <ul class="alert alert-danger">
@@ -41,43 +41,18 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('teacher/students/new')}}">
+                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/subject/new')}}">
                   {{csrf_field()}}
                   <div class="form-group">
-                    <label class="col-md-12">Student's Name<span class="help"> e.g Awosanmi Awoyelu</span></label>
+                    <label class="col-md-12">Name<span class="help"> e.g English Language</span></label>
                     <div class="col-md-12">
-                      <input type="text" class="form-control form-control-line" name="student_name">
+                      <input type="text" class="form-control form-control-line" name="name">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-md-12">Parent's Name<span class="help"> e.g Mr & Mrs. Awosanmi</span></label>
+                    <label class="col-md-12">Short Name<span class="help"> e.g Eng</span></label>
                     <div class="col-md-12">
-                      <input type="text" class="form-control form-control-line" name="parent_name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-12">Phone Number</label>
-                    <div class="col-md-12">
-                      <input type="text" class="form-control"  name="phone" placeholder="Phone here">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-12">Email</label>
-                    <div class="col-md-12">
-                      <input type="text" class="form-control"  name="email" placeholder="Email here">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-12">Class</label>
-                    <div class="col-md-12">
-                      <select class="form-control" name="class">
-                        <option>1J</option>
-                        <option>2J</option>
-                        <option>3J</option>
-                        <option>4J</option>
-                        <option selected="selected">5J</option>
-                        <option>6J</option>
-                      </select>
+                      <input type="text" class="form-control form-control-line" name="short_name">
                     </div>
                   </div>
                   

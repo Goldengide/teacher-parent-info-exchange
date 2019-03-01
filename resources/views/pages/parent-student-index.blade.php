@@ -129,7 +129,7 @@
               'copy', 'csv', 'excel', 'pdf', 'print'
           ]
       });
-    </script>
+  </script>
 
 @endsection
 @section('other-styles')

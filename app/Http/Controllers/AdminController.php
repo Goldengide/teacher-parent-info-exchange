@@ -11,11 +11,14 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use DB;
 use App\User;
+use App\Repository\DataRepository;
 use App\Season;
 use App\Subject;
 
 class AdminController extends Controller
 {
+
+    $dataRepository = new DataRepository;
     //
     public function dashboard() {
     	$noOfStudents = Student::count();
@@ -61,8 +64,8 @@ class AdminController extends Controller
                             $dataColumns['role'] = 'teacher'; 
                             // $dataColumns['password'] = bcrypt(trim(strtolower($contentSubArray[1]))); 
                             $dataColumns['password'] = bcrypt('lastname'); 
-                            $dataColumns['phone'] = $contentSubArray[4]; 
-                            $dataColumns['phone2'] = $contentSubArray[5]; 
+                            $dataColumns['phone'] = "0".$contentSubArray[4]; 
+                            $dataColumns['phone2'] = "0".$contentSubArray[5]; 
                             $dataColumns['email'] = $contentSubArray[6]; 
                             $dataColumns['birthdate'] = $contentSubArray[7]; 
                             $dataUpload[] = $dataColumns;
@@ -87,11 +90,6 @@ class AdminController extends Controller
             }
         }
     }
-
-    public function uploadStudentPage() {
-    	return view('pages.super-admin-student-upload');
-    }
-    public function uploadStudentAction(Request $request) {}
 
 
     public function parents()  {
@@ -130,10 +128,10 @@ class AdminController extends Controller
         $class->teacher_id = $request->teacher_id;
         $isSaved = $class->save();
         if ($isSaved) {
-            return redirect()->back()->with(['message' => 'Operation Successful', 'style' => 'alert-success']);
+            return redirect()->back()->with(['message' => 'New Class Added Successful', 'style' => 'alert-success']);
         }
         else {
-            return redirect()->back()->with(['message' => 'Operation Failed', 'style' => 'alert-danger']);
+            return redirect()->back()->with(['message' => 'Ooops! Something went wrong', 'style' => 'alert-danger']);
         }
     }
 
@@ -149,7 +147,7 @@ class AdminController extends Controller
         $class->name = $request->name;
         $isSaved = $class->save();
         if ($isSaved) {
-            return redirect()->back()->with(['message' => 'Operation Successful', 'style' => 'alert-success']);
+            return redirect()->back()->with(['message' => $class->name ." has been updated", 'style' => 'alert-success']);
         }
         else {
             return redirect()->back()->with(['message' => 'Operation Failed', 'style' => 'alert-danger']);
@@ -243,10 +241,56 @@ class AdminController extends Controller
 
 
     
+    public function addStudentPage() {
+        $classes = ClassTable::all();
+        return view('pages.super-admin-teacher-student-new', compact('classes'));
+    }
+
+    public function addStudentAction(Request $request) {
+        $student = new Student;
+        $student->parent_name = $request->parent_name;
+        $student->student_name = $request->student_name;
+        $student->phone = $request->phone;
+        $student->gender = $request->gender;
+        $student->phone = $request->phone;
+        $student->class_id = $request->class;
+        $student->save();
+        if ($student) {
+            return redirect()->back()->with(['message' => "Student has been added", 'style' => "alert-success"]);
+        }
+        else {
+            return redirect()->back()->with(['message' => "Ooops! Something went wrong", 'style' => "alert-danger"]);
+        }
+    }
+
+    public function editStudentPage($id) {
+        $student = Student::where('id', $id)->first();
+        $classes = ClassTable::all();
+        return view('pages.super-admin-teacher-student-edit', compact('student', 'classes'));
+    }
+
+    public function editStudentAction(Request $request) {
+        $id = $request->id;
+        $student = Student::find($id);
+        $student->parent_name = $request->parent_name;
+        $student->student_name = $request->student_name;
+        $student->phone = $request->phone;
+        $student->gender = $request->gender;
+        $student->phone = $request->phone;
+        $student->class_id = $request->class;
+        $student->save();
+        if ($student) {
+            return redirect()->back()->with(['message' => "Student Info has been Updated", 'style' => "alert-success"]);
+        }
+        else {
+            return redirect()->back()->with(['message' => "Ooops! Something went wrong", 'style' => "alert-danger"]);
+        }
+    }
 
     public function uploadStudentsPage() {
         return view('pages.super-admin-teacher-students-upload');
     }
+
 
     public function uploadStudentsAction(Request $request) {
         $file = $request->file('file');
@@ -266,22 +310,24 @@ class AdminController extends Controller
                     return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
                 }
                 else {
-                    $file->move("uploads/datas/", "student.csv");
-                    $content = File::get("uploads/datas/student.csv");
+                    $file->move("uploads/datas/", "result.csv");
+                    $content = File::get("uploads/datas/result.csv");
                     $contentArray = explode("\n", $content);
                     $dataUpload = array();
                     $dataColumns = array();
                     array_shift($contentArray);
                     foreach ($contentArray as $contentSubArray) {
                         $contentSubArray = explode("," ,$contentSubArray);
-                        if(count($contentSubArray) == 8) {
+                        if(count($contentSubArray) == 9) {
                             $dataColumns['parent_name'] = $contentSubArray[1]; 
+                            $dataColumns['birthday'] = $contentSubArray[8]; 
                             $dataColumns['student_name'] = $contentSubArray[2]; 
-                            $dataColumns['phone'] = $contentSubArray[5]; 
-                            $dataColumns['phone2'] = $contentSubArray[6]; 
-                            $dataColumns['entry_class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[3])))->value('id'); 
-                            $dataColumns['class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[3])))->value('id'); 
-                            $dataColumns['email'] = $contentSubArray[4]; 
+                            $dataColumns['phone'] = "0".$contentSubArray[6]; 
+                            $dataColumns['phone2'] = "0".$contentSubArray[7]; 
+                            $dataColumns['entry_class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[4])))->value('id'); 
+                            $dataColumns['class_id'] = ClassTable::where('name', trim(strtolower($contentSubArray[4])))->value('id'); 
+                            $dataColumns['email'] = $contentSubArray[5]; 
+                            $dataColumns['gender'] = $contentSubArray[3]; 
                             $dataUpload[] = $dataColumns;
                             
                         }
@@ -304,6 +350,7 @@ class AdminController extends Controller
             }
         }
     }
+
 
     public function students() {
         $countClasses = ClassTable::count(); 
@@ -463,11 +510,11 @@ class AdminController extends Controller
 
 
 
+
     public function subjects() {
         $subjects = Subject::all();
         return view('pages.super-admin-subject-index', compact('subjects'));
     }
-
 
     public function uploadSubjectsPage () {
         return view('pages.super-admin-subject-upload');
@@ -502,6 +549,7 @@ class AdminController extends Controller
                     foreach ($contentArray as $contentSubArray) {
                         $contentSubArray = explode("," ,$contentSubArray);
                         if(count($contentSubArray) == 3) {
+
                             $dataColumns['name'] = $contentSubArray[1]; 
                             $dataColumns['short_name'] = $contentSubArray[2]; 
                             $dataUpload[] = $dataColumns;
@@ -528,11 +576,120 @@ class AdminController extends Controller
         }
     }
 
+    public function addSubjectPage(){
+        return view('pages.super-admin-subject-new');
+    }
+
+    public function addSubjectAction(Request $request){
+        $subject = new Subject;
+        $subject->name = $request->name;
+        $subject->short_name = $request->short_name;
+        $subject->save();
+
+        if ($subject) {
+            return redirect()->back()->with(['message' => 'Subject Successfully Added', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
+        }
+    }
+
+    public function editSubjectPage($id){
+        $subject = Subject::where('id', $id)->first();
+        return view('pages.super-admin-subject-edit', compact('subject'));
+    }
+    public function editSubjectAction(Request $request){
+        $id = $request->id;
+        $subject = Subject::find($id);
+        $subject->name = $request->name;
+        $subject->short_name = $request->short_name;
+        $subject->save();
+
+        if ($subject) {
+            return redirect()->back()->with(['message' => 'Subject Successfully Updated', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
+        }
+    }
+
+
+
 
     public function uploadResult($seasonId, $classId, $subjectId) {
         $season = Season::where('id', $seasonId)->first(); 
         $subject = Subject::where('id', $subjectId)->first(); 
         $class = ClassTable::where('id', $classId)->first(); 
         return view('pages.super-admin-result-upload', compact('subject', 'class', 'season'));
+    }
+
+
+    public function uploadResultAction(Request $request) {
+
+        $seasonId = $request->season_id;
+        $subjectId = $request->subject_id;
+        $studentId = $request->student_id;
+        $classId = $request->class_id;
+
+        $className = ClassTable::where('id', $classId)->value('name');
+        $subjectName = Subject::where('id', $subjectId)->value('name');
+        $season = Subject::where('id', $seasonId)->first();
+
+        $generatedfilename = $this->dataRepository->replaceDelimeter($season->session, "/", "_");
+        $generatedfilename .= "_".$this->dataRepository->sequenceNumber($season->term_no). "_Term_";
+        $generatedfilename .= $className."_".$subjectName."_"."results.csv";
+
+        $file = $request->file('file');
+
+        /*$this->validate($request, [
+            'file' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+        */
+
+        if($request->hasFile('file')) {
+            if ($file->isValid()) {
+                $filename = $file->getClientOriginalName();
+                $array = explode(".", $filename);
+                $extension = $array[count($array)-1];
+                // return $extension;
+                if(strtolower($extension) != "csv") {
+                    return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
+                }
+                else {
+                    $file->move("uploads/datas", $generatedfilename);
+                    $content = File::get("uploads/datas/".$generatedfilename);
+                    $contentArray = explode("\n", $content);
+                    $dataUpload = array();
+                    $dataColumns = array();
+                    array_shift($contentArray);
+                    foreach ($contentArray as $contentSubArray) {
+                        $contentSubArray = explode("," ,$contentSubArray);
+                        if(count($contentSubArray) == 3) {
+
+                            $dataColumns['name'] = $contentSubArray[1]; 
+                            $dataColumns['short_name'] = $contentSubArray[2]; 
+                            $dataUpload[] = $dataColumns;
+                            
+                        }
+
+                        else {
+                            return redirect()->back()->with(['message'=> 'Format not correct!', 'style' => 'alert-danger']);
+                            
+                        }
+
+                    }
+
+                    $operationUpload  = DB::table("subjects")->insert($dataUpload);
+
+                    if($operationUpload) {
+                        return redirect()->back()->with(['message'=> 'Subjects Upload Successful', 'style' => 'alert-success']);
+                    }
+                    else {
+                        return redirect()->back()->with(['message'=> 'Upload not Successful', 'style' => 'alert-danger']);
+                    }
+                }
+            }
+        }
     }
 }

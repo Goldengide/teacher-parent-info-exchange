@@ -16,7 +16,7 @@ class CreateStudentsTable extends Migration
             $table->increments('id');
             $table->string('parent_name');
             $table->string('img_url')->default('profile.jpg');
-            $table->integer('parent_id')->default(0);
+            // $table->integer('parent_id')->default(0);
             $table->integer('class_id');
             $table->integer('entry_class_id');
             $table->integer('entry_season_id');

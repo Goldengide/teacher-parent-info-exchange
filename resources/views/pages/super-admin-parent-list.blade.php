@@ -51,7 +51,7 @@
               </tfoot>
               <tbody> <?php $sn = 0 ?>
                 @if(count($parents) < 1)
-                  <td colspan="5">No teacher data has been uploaded so far. Please upload</td>
+                  <td colspan="5">No parent data has been uploaded so far. Please upload</td>
                 @else
                   @foreach($parents as $parent)
                   <tr>  <?php $sn++; ?>

@@ -55,7 +55,8 @@
                     <label class="col-md-12">Assigned Teacher</label>
                     <div class="col-md-12">
                       <select class="form-control" name="teacher_id">
-                        @foreach ($teachers as teacher) 
+                        <option value="0">None</option>
+                        @foreach ($teachers as $teacher) 
                           <option value="{{$teacher->id}}">{{$teacher->fullname}}</option>
                         @endforeach
                       </select>
@@ -65,6 +66,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                      <a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-outline btn-default">Go Back</a>
                     </div>
                   </div>
                 </form>

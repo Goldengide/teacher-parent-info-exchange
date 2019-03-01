@@ -24,7 +24,7 @@
             <h3 class="box-title m-b-0">Seasons </h3>
             <p class="text-muted m-b-30">Current Session: {{$activeSession}}</p>
             <p class="text-muted m-b-30">Current Term: {!! $activeTerm  !!}</p>
-            <p class="text-muted m-b-30"><a href="{{ url('/super-admin/seasons/add')}}">Add New Session</a></p>
+            <!-- <p class="text-muted m-b-30"><a href="{{ url('/super-admin/seasons/add')}}">Add New Session</a></p> -->
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -64,7 +64,7 @@
                       
                       @else
                         @if($noOfSubject == 0 || $noOfClass == 0 || $noOfStudent == 0)
-                          <a href="javascript::void()" class="text-warning disabled" title="You have to upload the Subjects, Students and Class details before you can activate this season" disabled><i class="icon icon-unlock"></i>Activate</a>
+                          <a href="javascript::void()" class="text-warning swal-alert" title="You have to upload the Subjects, Students and Class details before you can activate this season"><i class="icon icon-unlock"></i>Activate</a>
                         @else 
                           <a href="{{url('super-admin/season/activate/'. $season->id)}}" class="text-primary" title=""><i class="icon icon-unlock"></i>Activate</a>
                         @endif
@@ -106,6 +106,37 @@
   <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+  <script src="{{ URL::asset("plugins/bower_components/sweetalert/sweetalert.min.js") }}"></script>
+  <script src="{{ URL::asset("plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js") }}"></script>
+
+  <script type="text/javascript">
+  // $.ajaxSetup();
+  $(document).ready(function() {
+      
+
+    var nameErrorMessage = $('.swal-alert').attr('title');
+    console.log(nameErrorMessage);
+
+    var helpTipMessage = {
+              title:'Required',
+              text: nameErrorMessage,
+              animation: true,
+              confirmButtonText: 'Got it!',
+              allowOutsideClick: true,
+              showConfirmButton: true,
+    };
+
+    $('.swal-alert').mousedown(function() {
+
+      swal(helpTipMessage);
+      
+    });
+
+
+  });
+
+</script>
   <script>
       $(document).ready(function(){
         $('#myTable').DataTable();
@@ -155,5 +186,6 @@
 @endsection
 @section('other-styles')
   <link href="{{ URL::asset("plugins/bower_components/datatables/jquery.dataTables.min.css") }}" rel="stylesheet">
+  <link href="{{ URL::asset("plugins/bower_components/sweetalert/sweetalert.css")}}" rel="stylesheet" type="text/css">
   <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 @endsection

@@ -27,6 +27,10 @@ Route::post('/logina', 'LoginController@loginPost');
 Route::group(['middleware' => 'auth', 'prefix' => 'parent'], function() {
 // 
 	Route::get('/dashboard', 'ParentController@dashboard');
+	Route::get('/child/profile', 'ParentController@dashboard');
+	// Route::get('/child/profile/{id}', 'ParentController@dashboard');
+	Route::post('/child/profile/pics', 'ParentController@profilePicsUpdateAction');
+	Route::get('/teacher/profile/{id}', 'ParentController@teacherProfile');
 
 });
 
@@ -94,8 +98,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	Route::post('/student/upload', 'AdminController@uploadStudentsAction');
 	Route::get('/student/new', 'AdminController@addStudentPage');
 	Route::post('/student/new', 'AdminController@addStudentAction');
-	Route::get('/students/edit/{id}', 'AdminController@updateStudentPage');
-	Route::post('/students/edit', 'AdminController@updateStudentAction');
+	Route::get('/student/edit/{id}', 'AdminController@editStudentPage');
+	Route::post('/student/edit', 'AdminController@editStudentAction');
 
 
 	// Classes Upload 
@@ -113,10 +117,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
 	// Subject Upload 
 	Route::get('/subjects', 'AdminController@subjects');
-	Route::get('/subject/new', 'AdminController@addSubject');
+	Route::get('/subject/new', 'AdminController@addSubjectPage');
 	Route::post('/subject/new', 'AdminController@addSubjectAction');
-	Route::get('/subject/edit/{id}', 'AdminController@editSubject');
-	Route::get('/subject/edit', 'AdminController@editSubjectAction');
+	Route::get('/subject/edit/{id}', 'AdminController@editSubjectPage');
+	Route::post('/subject/edit', 'AdminController@editSubjectAction');
 	Route::get('subject/upload', 'AdminController@uploadSubjectsPage');
 	Route::post('/subject/upload', 'AdminController@uploadSubjects');
 

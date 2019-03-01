@@ -52,7 +52,13 @@
                   @foreach($classes as $class)
                   <tr>
                     <td>{{strtoupper($class->name)}}</td>
-                    <td>{{$class->teacher($class->teacher_id)}}</td>
+                    <td>
+                      @if($class->teacher_id == 0)
+                        <a href="{{ url('/super-admin/classes/assign-teacher/'. $class->id) }}" class="text-primary ">Unassigned</a>
+                      @else
+                        <a href="{{ url('/super-admin//teacher/profile/'. $class->teacher_id) }}" class="text-info">{{$class->teacher($class->teacher_id)->fullname}} </a>
+                      @endif
+                    </td>
                     <td>
                       <a href="{{url('super-admin/classes/view/'. $class->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
                       <a href="{{url('super-admin/classes/edit/'. $class->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>

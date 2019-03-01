@@ -6,19 +6,40 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\User;
+use App\Student;
+use App\StudentDetail;
+use Auth;
+
 class ParentController extends Controller
 {
     //
     public function dashboard() {
-    	$noOfStudents = 20; 
-    	$noOfSubjects = 15;
-    	return view('parent-dashboard', compact('noOfStudents, noOfSubjects'));
+        $children = Student::where('parent_name', Auth::user()->fullname)->get();
+        $countChildren = Student::where('parent_name', Auth::user()->fullname)->count();
+        // return $countChildren;
+        if($countChildren == 1) {
+            $child = $children[0];
+            return view('pages.parent-students-profile', compact('child', 'countChildren'));
+        }
+        else if($countChildren > 1) {
+            return view('pages.parent-students-index', compact('children', 'countChildren'));
+        }
+
+        else {
+            return view('pages.parent-dashboard');
+        }
     }
 
-    public function viewTeachers() {}
 
-    public function viewChild($id) {
+    public function teacherProfile($id) {
+        $teacher = user::where('id', $id)->first();
+        return view('pages.parent-teacher-profile', compact('teacher'));
+    }
 
+    public function viewChild($studentId) {
+        $childInfo = Student::where('student_id', $studentId);
+        return view('pages.', compact('childInfo'));
     }
     public function logAComplaintToThePoprietor() {}
     public function viewChildResult() {}
@@ -28,14 +49,10 @@ class ParentController extends Controller
         return view('pages.parent-student-upload-pics', compact('student')); 
     }
     public function profilePicsUpdateAction(Request $request) {
-        /*$id = $request->id;
-        $file = $request->file;
-        $user = User::find($id);
-        $user->img_url*/
 
         $id = $request->id;
         $student = Student::find($id);
-        $file = $request->photo;
+        $file = $request->file('photo');
 
         $previousFilename = $file->getClientOriginalName();
         $filename = $request->email ."_". $request->student_name .".". explode(".", $previousFilename)[count(explode(".", $previousFilename)) - 1];
@@ -45,7 +62,7 @@ class ParentController extends Controller
         if($request->hasFile('photo')) {
             if ($file->isValid()) {
                 
-                if($file->move( URL::asset('/public/uploads/images') , $filename)) {
+                if($file->move('uploads/images' , $filename)) {
                     $student->img_url = $filename;
 
                 }

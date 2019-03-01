@@ -43,6 +43,27 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-3 col-lg-3 col-sm-6">
+          <div class="white-box">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="col-in row">
+                  <div class="col-xs-12">
+                    <h3 class="counter text-center m-t-15 text-primary">GO</h3>
+                  </div>
+                  <div class="col-xs-12">
+                    <h4 class="text-muted text-center text-info vb">Upload Result</h4>
+                  </div>
+
+                  <div class="col-xs-12">
+                    <!-- <h3 class="counter text-center m-t-15 text-primary"><i class="icon icon-book"></i></h3> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!--row -->
       

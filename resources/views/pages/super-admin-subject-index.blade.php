@@ -23,7 +23,7 @@
           <div class="white-box">
             <h3 class="box-title m-b-0">Subjects</h3>
             <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/upload')}}">Upload Subjects</a></p>
-            <!-- <p class="text-muted m-b-30"><a href="{{url('/teacher/students/new')}}">Add New Students</a></p> -->
+            <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/new')}}">Add New Subject</a></p>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
