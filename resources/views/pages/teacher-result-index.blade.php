@@ -1,27 +1,28 @@
-@extends('layouts.super-admin')
+@extends('layouts.teachers')
 @section('content')
+  <!-- Page Content -->
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">...</h4>
+          <h4 class="page-title">{{strtoupper($class->name)}}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
             <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
-            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
+            <li><a href="{{ url('teacher/dashboard')}}">Dashboard</a></li>
             <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
         </div>
         <!-- /.col-lg-12 -->
       </div>
-        <!-- /row -->
+      <!-- /row -->
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
-            <h3 class="box-title m-b-0">Classes</h3>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/new')}}">Add New Class</a></p>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/upload')}}">Upload Classes</a></p>
+            <h3 class="box-title m-b-0">Subject: {{$subject->name}}</h3>
+            <h3 class="box-title m-b-0">Class: {{$class->name}}</h3>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -31,35 +32,32 @@
             <table id="myTable" class="table table-striped">
               <thead>
                 <tr>
-                  <th>Class Name</th>
-                  <th>Teacher Assigned</th>
+                  <th>Student Name</th>
+                  <th>Assessment</th>
+                  <th>Exam Score</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Class Name</th>
-                  <th>Teacher Assigned</th>
+                  <th>Student Name</th>
+                  <th>Assessment</th>
+                  <th>Exam Score</th>
                   <th>Action</th>
                 </tr>
               </tfoot>
               <tbody>
-                @if(count($classes) < 1)
-                  <td colspan="5">No Classes data has been uploaded so far. Please upload</td>
+                @if(count($results) < 1)
+                  <td colspan="5">No student data has been uploaded so far. Please upload</td>
                 @else
-                  @foreach($classes as $class)
+                  @foreach($results as $result)
                   <tr>
-                    <td>{{strtoupper($class->name)}}</td>
+                    <td>{{$result->student($result->student_id)}}</td>
+                    <td>{{$result->assessment}}</td>
+                    <td>{{$result->exam_score}}</td>
                     <td>
-                      @if($class->teacher_id == 0)
-                        <a href="{{ url('/super-admin/classes/assign-teacher/'. $class->id) }}" class="text-primary ">Unassigned</a>
-                      @else
-                        <a href="{{ url('/super-admin//teacher/profile/'. $class->teacher_id) }}" class="text-info">{{$class->teacher($class->teacher_id)->fullname}} </a>
-                      @endif
-                    </td>
-                    <td>
-                      <a href="{{url('super-admin/classes/view/'. $class->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
-                      <a href="{{url('super-admin/classes/edit/'. $class->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
+                      <a href="{{url('teacher/result/upload/view'. $result->id)}}" class="text-info"><i class="icon icon-user"></i></a>  
+                      <a href="{{url('teacher/result/edit/'. $result->id )}}" class="text-info"><i class="ti-upload"></i>View Result</a>
                     </td> 
                     
                   </tr>
@@ -72,11 +70,6 @@
         </div>
       </div>
       <!-- /.row -->
-@endsection
-@section('title')
-  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-    <h4 class="page-title">{{'title'}}</h4>
-  </div>
 @endsection
 @section('other-scripts')
   <script src="{{ URL::asset("plugins/bower_components/datatables/jquery.dataTables.min.js") }}"></script>

@@ -19,8 +19,9 @@ class CreateResultsTable extends Migration
             $table->integer('class_id');
             $table->integer('teacher_id');
             $table->integer('subject_id');
-            $table->integer('assessment');
-            $table->integer('exam_score');
+            $table->string('assessment');
+            $table->string('exam_score');
+            $table->integer('times_uploaded');
             $table->timestamps();
         });
     }

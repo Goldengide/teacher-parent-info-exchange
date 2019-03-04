@@ -137,64 +137,7 @@ class TeacherController extends Controller
         // $seasons = Season::
         return view('pages.teacher-upload-results-for-subject', compact('class', 'subject'));
     }
-    public function uploadResultAction(Request $request) {
-        $subject = $request->subject;
-        $class = $request->class;
-        $subjectId = $request->subject_id;
-        $teacherId = $request->teacher_id;
-        $seasonId = $request->season_id;
-        $classId = $request->class_id;
-        $seasonId = $request->season_id;
-        $file = $request->file('file');
-
-        /*$this->validate($request, [
-            'file' => 'required|unique:posts|max:255',
-            'body' => 'required',
-        ]);
-        */
-        if($request->hasFile('file')) {
-            if ($file->isValid()) {
-                $filename = $file->getClientOriginalName();
-                $array = explode(".", $filename);
-                $extension = $array[count($array)-1];
-                // return $extension;
-                if(strtolower($extension) != "csv") {
-                    return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
-                }
-                else {
-                    $file->move("uploads/", "submission.csv");
-                    $content = File::get("uploads/submission.csv");
-                    $contentArray = explode("\n", $content);
-                    $dataUpload = array();
-                    $dataColumns = array();
-                    array_shift($contentArray);
-                    foreach ($contentArray as $contentSubArray) {
-                        $contentSubArray = explode("," ,$contentSubArray);
-                        if(count($contentSubArray) == 5) {
-                            $dataColumns['student_name'] = $contentSubArray[1]; 
-                            $dataColumns['subject_id'] = $subjectId; 
-                            $dataColumns['season_id'] = $seasonId; 
-                            $dataColumns['class_id'] = $classId; 
-                            $dataColumns['teacher_id'] = $teacherId; 
-                            $dataColumns['assessment'] = $contentSubArray[3]; 
-                            $dataColumns['exam_score'] = $contentSubArray[4]; 
-                            $dataUpload[] = $dataColumns;
-                            
-                        }
-                        // return $dataUpload;
-
-                    }
-
-                    // return var_dump($dataUpload);
-                    $operationUpload  = DB::table("students")->insert($dataUpload);
-
-                    if($operationUpload) {
-                        return redirect()->back()->with(['message'=> 'Student Upload Successful', 'style' => 'alert-success']);
-                    }
-                }
-            }
-        }
-    }
+    
 
     public function prepareResult() {}
 
@@ -277,6 +220,138 @@ class TeacherController extends Controller
         $countChildren = Student::where('parent_name', $parent->fullname)->count();
         $students = Student::where('parent_name', $parent->fullname)->get();
         return view('pages.teacher-parent-profile', compact('parent', 'countChildren', 'students'));
+    }
+
+
+
+
+
+
+    public function sessionIndex() {
+        $thereIsPastSeasons = Season::where('ended', 1)->count();
+        if (!$thereIsPastSeasons) {
+            return redirect('/teacher/subjects');
+        }
+        else {
+            $pastSeasons = Season::where('ended', 1)->get();
+            return view('pages.teacher-result-session', compact('pastSeasons'));
+        }
+
+    }
+
+    public function subjectIndex() {
+        $subjects = Subject::all();
+        $season = Season::where('current', 1)->first();
+        $class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+        return view('pages.teacher-subjects-index', compact('subjects', 'class', 'season'));
+    }
+
+    public function uploadResult($seasonId, $classId, $subjectId) {
+        $season = Season::where('id', $seasonId)->first(); 
+        $subject = Subject::where('id', $subjectId)->first(); 
+        $class = ClassTable::where('id', $classId)->first(); 
+        return view('pages.teacher-result-upload', compact('subject', 'class', 'season'));
+    }
+
+    public function uploadResultAction(Request $request) {
+        $subjectId = $request->subject_id;
+        $teacherId = $request->teacher_id;
+        $seasonId = $request->season_id;
+        $classId = $request->class_id;
+        $seasonId = $request->season_id;
+        $file = $request->file('file');
+
+        /*$this->validate($request, [
+            'file' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+        */
+        if($request->hasFile('file')) {
+            if ($file->isValid()) {
+                $filename = $file->getClientOriginalName();
+                $array = explode(".", $filename);
+                $extension = $array[count($array)-1];
+                // return $extension;
+                if(strtolower($extension) != "csv") {
+                    return redirect()->back()->with(['message'=> 'File is not csv please upload a csv file', 'style' => 'alert-danger']);
+                }
+                else {
+                    $ResultHasBeenUploadedPreviously = Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->count();
+                    if(!$ResultHasBeenUploadedPreviously) {
+                        $times_uploaded = 1;
+                    }
+                    else {
+                        $times_uploaded = Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->first()->times_uploaded + 1;
+                        Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->delete();
+                    }
+                    $file->move("uploads/", "submission.csv");
+                    $content = File::get("uploads/submission.csv");
+                    $contentArray = explode("\n", $content);
+                    $dataUpload = array();
+                    $dataColumns = array();
+                    array_shift($contentArray);
+                    foreach ($contentArray as $contentSubArray) {
+                        $contentSubArray = explode("," ,$contentSubArray);
+                        if(count($contentSubArray) == 5) {
+                            $dataColumns['student_id'] = $contentSubArray[2]; 
+                            $dataColumns['subject_id'] = $subjectId; 
+                            $dataColumns['season_id'] = $seasonId; 
+                            $dataColumns['class_id'] = $classId; 
+                            $dataColumns['teacher_id'] = $teacherId; 
+                            $dataColumns['assessment'] = $contentSubArray[3]; 
+                            $dataColumns['exam_score'] = $contentSubArray[4]; 
+                            $dataColumns['times_uploaded'] = $times_uploaded; 
+                            $dataUpload[] = $dataColumns;
+                            
+                        }
+                        // return $dataUpload;
+
+                    }
+
+                    // return var_dump($dataUpload);
+                    $operationUpload  = DB::table("results")->insert($dataUpload);
+
+                    if($operationUpload) {
+                        return redirect('/teacher/subjects')->with(['message'=> 'Result has been uploaded Successful', 'style' => 'alert-success']);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public function resultIndex($seasonId, $classId, $subjectId) {
+        $subject = Subject::where('id', $subjectId)->first();
+        $class = ClassTable::where('id', $classId)->first();
+        $results = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('subject_id', $subjectId)->get();
+        return view('pages.teacher-result-index', compact('results', 'subject'));
+    }
+
+    public function viewResult($id) {
+        $result = Result::where('id', $id)->first();
+        return view('pages.teacher-result-view', compact('result'));
+    }
+
+    public function editResult($id) {
+        $result = Result::where('id', $id)->first();
+        return view('pages.teacher-result-edit', compact('result'));
+
+    }
+
+    public function editResultAction(Request $request) {
+        $result = Result::find($id);
+        $result->assessment = $request->assessment;
+        $result->exam = $request->exam;
+        $result->save();
+
+
+        if ($result) {
+            return redirect()->back()->with(['message' => 'Result Successfully Updated', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
+        }
+
     }
 
     

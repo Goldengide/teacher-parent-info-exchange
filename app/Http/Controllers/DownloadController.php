@@ -72,10 +72,10 @@ class DownloadController extends Controller
     	$resultDetails = StudentDetail::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->get();
     	$csvContent =array();
     	$sn = 0;
-    	foreach ($resultDetails as $resultDetail) {
-    		$sn++;
-    		$csvContent[] = "SN, student_name, student_id, assessment, exam scores"; 
-    		$csvContent[] = $sn. ", ". $resultDetail->student($resultDetail->student_id). ", ".$resultDetail->student_id.",".",";
+    	$csvContent[] = "SN, Student Name, ID No, Assessment, Exam Score"; 
+        foreach ($resultDetails as $resultDetail) {
+            $sn++;
+    		$csvContent[] = $sn. ", ". $resultDetail->student($resultDetail->student_id). ", ".$resultDetail->student_id.",0".",0";
     	}
         $template = implode("\n", $csvContent);
     	return response($template)
@@ -83,4 +83,6 @@ class DownloadController extends Controller
                     ->header('Content-type', 'application/force-download')
                     ->header('X-Header-One', 'Header Value'); 
     }
+
+    
 }

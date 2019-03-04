@@ -1,20 +1,6 @@
 @extends('layouts.super-admin')
 @section('content')
-  <div id="page-wrapper">
-    <div class="container-fluid">
-      <div class="row bg-title">
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">...</h4>
-        </div>
-        <!-- <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-          <ol class="breadcrumb">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Events</a></li>
-            <li class="active">Add Event</li>
-          </ol>
-        </div> -->
-        <!-- /.col-lg-12 -->
-      </div>
+  
       <!-- .row -->
       <div class="row">
         <div class="col-sm-12">
@@ -54,6 +40,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                      <a href="{{url('/super-admin/teachers')}}" class="btn btn-lg btn-info">Go Back</a>
                     </div>
                   </div>
                 </form>

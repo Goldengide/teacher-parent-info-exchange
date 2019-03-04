@@ -6,13 +6,13 @@
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title">...</h4>
         </div>
-        <!-- <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Events</a></li>
-            <li class="active">Add Event</li>
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
+            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
-        </div> -->
+        </div>
         <!-- /.col-lg-12 -->
       </div>
       <!-- .row -->
@@ -79,10 +79,10 @@
     <!-- /.container-fluid -->
   </div>
   <!-- /#page-wrapper -->
-  @endsection
-  @section('other-scripts')
+@endsection
+@section('other-scripts')
   <script src="{{URL::asset("plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js")}}"></script>
   <!-- Date range Plugin JavaScript -->
   <!-- <script src="{{URL::asset("plugins/bower_components/timepicker/bootstrap-timepicker.min.js")}}"></script> -->
  
-  @endsection
+@endsection

@@ -6,6 +6,13 @@
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title">  </h4>
         </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <ol class="breadcrumb">
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <!-- <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li> -->
+            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+          </ol>
+        </div>
         <!-- /.col-lg-12 -->
       </div>
       <!-- /.row -->
@@ -50,7 +57,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">0</h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/students/grad')}}">{{$noOfStudents}}</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Graduating Students</h4>
@@ -67,7 +74,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">0</h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/students/new')}}">{{$noOfStudents}}</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">New Students</h4>
@@ -91,7 +98,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <!-- <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">Click to see</a></h5> -->
+                    <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">Click to see</a></h5>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Best Students</h4>

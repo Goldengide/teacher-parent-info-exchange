@@ -14,15 +14,17 @@ use App\User;
 use App\Repository\DataRepository;
 use App\Season;
 use App\Subject;
+use App\StudentSummary;
 
 class AdminController extends Controller
 {
 
-    $dataRepository = new DataRepository;
     //
     public function dashboard() {
     	$noOfStudents = Student::count();
     	$noOfTeachers = User::where('role', 'teacher')->count();
+        // $findBestStudent = StudentSummary::where('')->get()
+        // $bestStudnent = 
 
 
 
@@ -63,7 +65,7 @@ class AdminController extends Controller
                             $dataColumns['fullname'] = strtoupper($contentSubArray[1]). ", ". $contentSubArray[2]. " ". $contentSubArray[3]; 
                             $dataColumns['role'] = 'teacher'; 
                             // $dataColumns['password'] = bcrypt(trim(strtolower($contentSubArray[1]))); 
-                            $dataColumns['password'] = bcrypt('lastname'); 
+                            $dataColumns['password'] = bcrypt(trim(strtolower($contentSubArray[1]))); 
                             $dataColumns['phone'] = "0".$contentSubArray[4]; 
                             $dataColumns['phone2'] = "0".$contentSubArray[5]; 
                             $dataColumns['email'] = $contentSubArray[6]; 
@@ -93,20 +95,34 @@ class AdminController extends Controller
 
 
     public function parents()  {
-    	$parents = User::where('role', 'parent')->get();
-    	$countParents = User::where('role', 'parent')->count();
-        $currentSeason = Season::where('current', 1)->first();
-        $activeSeason = Season::where('status', 1)->first();
-    	return view('pages.super-admin-parent-list', compact('parents', 'countParents', 'currentSeason', 'activeSeason'));
+        $currentSeasonExist = Season::where('current', 1)->where('status', 1)->count();
+        if (!$currentSeasonExist) {
+            return redirect('/super-admin/seasons')->with(['message' => 'You can only view Parent if you activate  and launch the Season', 'style' => 'alert-info']);
+        }
+        else {
+        	$parents = User::where('role', 'parent')->get();
+        	$countParents = User::where('role', 'parent')->count();
+            $currentSeason = Season::where('current', 1)->first();
+            $activeSeason = Season::where('status', 1)->first();
+        	return view('pages.super-admin-parent-list', compact('parents', 'countParents', 'currentSeason', 'activeSeason'));
+            }
     }
 
-    public function teachers()  {     //done
-    	$teachers = User::where('role', 'teacher')->get();
-        $countTeachers = User::where('role', 'teacher')->count();
-    	$classes = ClassTable::all();
-        $currentSeason = Season::where('current', 1)->first();
-        $activeSeason = Season::where('status', 1)->first();
-    	return view('pages.super-admin-teacher-list', compact('teachers', 'countTeachers', 'currentSeason', 'activeSeason', 'classes'));
+    public function teachers()  {     
+    	$currentSeasonExist = Season::where('current', 1)->where('status', 1)->count();
+        if (!$currentSeasonExist) {
+            return redirect('/super-admin/seasons')->with(['message' => 'You can only view Parent if you activate  and launch the Season', 'style' => 'alert-info']);
+        }
+        else {
+
+            $teachers = User::where('role', 'teacher')->get();
+            $countTeachers = User::where('role', 'teacher')->count();
+        	$classes = ClassTable::all();
+            $currentSeason = Season::where('current', 1)->first();
+            $activeSeason = Season::where('status', 1)->first();
+        	return view('pages.super-admin-teacher-list', compact('teachers', 'countTeachers', 'currentSeason', 'activeSeason', 'classes'));
+            
+        }
     }
 
 
@@ -628,16 +644,16 @@ class AdminController extends Controller
 
         $seasonId = $request->season_id;
         $subjectId = $request->subject_id;
-        $studentId = $request->student_id;
+        // $studentId = $request->student_id;
         $classId = $request->class_id;
 
-        $className = ClassTable::where('id', $classId)->value('name');
+        $class = ClassTable::where('id', $classId)->first();
         $subjectName = Subject::where('id', $subjectId)->value('name');
         $season = Subject::where('id', $seasonId)->first();
-
-        $generatedfilename = $this->dataRepository->replaceDelimeter($season->session, "/", "_");
-        $generatedfilename .= "_".$this->dataRepository->sequenceNumber($season->term_no). "_Term_";
-        $generatedfilename .= $className."_".$subjectName."_"."results.csv";
+        $dataRepository = new DataRepository;
+        $generatedfilename = $dataRepository->replaceDelimeter($season->session, "/", "_");
+        $generatedfilename .= "_".$dataRepository->sequenceNumber($season->term_no). "_Term_";
+        $generatedfilename .= $class->name."_".$subjectName."_"."results.csv";
 
         $file = $request->file('file');
 
@@ -665,10 +681,15 @@ class AdminController extends Controller
                     array_shift($contentArray);
                     foreach ($contentArray as $contentSubArray) {
                         $contentSubArray = explode("," ,$contentSubArray);
-                        if(count($contentSubArray) == 3) {
+                        if(count($contentSubArray) == 5) {
 
-                            $dataColumns['name'] = $contentSubArray[1]; 
-                            $dataColumns['short_name'] = $contentSubArray[2]; 
+                            $dataColumns['season_id'] = $seasonId; 
+                            $dataColumns['subject_id'] = $subjectId; 
+                            $dataColumns['class_id'] = $classId; 
+                            $dataColumns['teacher_id'] = $class->teaacher_id; 
+                            $dataColumns['student_id'] = $contentSubArray[2]; 
+                            $dataColumns['assessment'] = $contentSubArray[3]; 
+                            $dataColumns['exam'] = $contentSubArray[4]; 
                             $dataUpload[] = $dataColumns;
                             
                         }
@@ -680,16 +701,66 @@ class AdminController extends Controller
 
                     }
 
-                    $operationUpload  = DB::table("subjects")->insert($dataUpload);
+                    $operationUpload  = DB::table("results")->insert($dataUpload);
 
                     if($operationUpload) {
-                        return redirect()->back()->with(['message'=> 'Subjects Upload Successful', 'style' => 'alert-success']);
+                        return redirect()->back()->with(['message'=> 'Result Upload Successful', 'style' => 'alert-success']);
                     }
                     else {
-                        return redirect()->back()->with(['message'=> 'Upload not Successful', 'style' => 'alert-danger']);
+                        return redirect()->back()->with(['message'=> 'Ooops! Upload not Successful', 'style' => 'alert-danger']);
                     }
                 }
             }
         }
     }
+
+
+
+
+
+    public function seasonforResult() {
+        $seasons = Season::where('ended', true)->get();
+        $currentSeason = Season::where('current', true);
+        return view('pages.super-admin-parent-update', compact('seasons', 'currentSeason'));
+    }
+
+    public function classForResult($seasonId, $classId) {
+
+    }
+
+    public function subjectforResult() {}
+
+    public function resultIndex() {
+
+        $results = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('subject_id', $subjectId)->get();
+        return view('pages.super-admin-result-index', compact('results'));
+    }
+
+    public function viewResult($id) {
+        $result = Result::where('id', $id)->first();
+        return view('pages.super-admin-result-view', compact('result'));
+    }
+
+    public function editResult($id) {
+        $result = Result::where('id', $id)->first();
+        return view('pages.super-admin-result-edit', compact('result'));
+
+    }
+
+    public function editResultAction(Request $request) {
+        $result = Result::find($id);
+        $result->assessment = $request->assessment;
+        $result->exam = $request->exam;
+        $result->save();
+
+
+        if ($result) {
+            return redirect()->back()->with(['message' => 'Result Successfully Updated', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
+        }
+
+    }
+
 }

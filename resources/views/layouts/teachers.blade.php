@@ -152,7 +152,7 @@
                         
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">
+                        <a href="{{url('/teacher/result')}}" class="waves-effect">
                             <i class="icon icon-user"></i> 
                             <span class="hide-menu">Results </span>
                         </a>

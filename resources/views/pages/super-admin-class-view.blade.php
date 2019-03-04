@@ -4,13 +4,13 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">{{strtoupper($class->name)}} Class</h4>
+          <h4 class="page-title">...</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-            <li><a href="{{ url('/super-admin/dashboard')}}">Dashboard</a></li>
-            <li><a href="{{ url('/super-admin/classes')}}">Back to the Class List</a></li>
-            <li class="active"> {{strtoupper($class->name)}} </li>
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
+            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -33,7 +33,7 @@
                 @endif
                 </dd>  <br><br>
                 <dt style="text-align: left; white-space: normal;">No Of Students: </dt> <dd>{{$noOfStudents}}</dd> <br></br>
-                <dt style="text-align: left; white-space: normal;"><a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-primary">Go Back</a></dt> <dd></dd> <br></br>
+                <dt style="text-align: left; white-space: normal;"><a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-info">Go Back</a></dt> <dd></dd> <br></br>
                       
 
 
@@ -51,4 +51,9 @@
   </div>
   <!-- /#page-wrapper -->
 
-  @endsection 
+@endsection 
+@section('title')
+  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+    <h4 class="page-title">{{strtoupper($class->name)}} Class</h4>
+  </div>
+@endsection
