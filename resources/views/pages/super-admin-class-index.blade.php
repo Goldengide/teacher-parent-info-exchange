@@ -8,9 +8,14 @@
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
             <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
-            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @if(!$seasonIsSet)
+              <li class="active">---</li>
+              
+            @else
+              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @endif
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -20,8 +25,12 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Classes</h3>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/new')}}">Add New Class</a></p>
-            <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/upload')}}">Upload Classes</a></p>
+            @if(!isset($results) || empty($results))
+                
+                <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/new')}}">Add New Class</a></p>
+                <p class="text-muted m-b-30"><a href="{{url('/super-admin/classes/upload')}}">Upload Classes</a></p>
+            
+            @endif
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -32,15 +41,19 @@
               <thead>
                 <tr>
                   <th>Class Name</th>
-                  <th>Teacher Assigned</th>
-                  <th>Action</th>
+                  @if(!isset($results) && empty($results))
+                    <th>Teacher Assigned</th>
+                    <th>Action</th>
+                  @endif
                 </tr>
               </thead>
               <tfoot>
                 <tr>
                   <th>Class Name</th>
-                  <th>Teacher Assigned</th>
-                  <th>Action</th>
+                  @if(!isset($results) && empty($results))
+                    <th>Teacher Assigned</th>
+                    <th>Action</th>
+                  @endif
                 </tr>
               </tfoot>
               <tbody>
@@ -49,18 +62,26 @@
                 @else
                   @foreach($classes as $class)
                   <tr>
-                    <td>{{strtoupper($class->name)}}</td>
-                    <td>
-                      @if($class->teacher_id == 0)
-                        <a href="{{ url('/super-admin/classes/assign-teacher/'. $class->id) }}" class="text-primary ">Unassigned</a>
-                      @else
-                        <a href="{{ url('/super-admin//teacher/profile/'. $class->teacher_id) }}" class="text-info">{{$class->teacher($class->teacher_id)->fullname}} </a>
-                      @endif
-                    </td>
-                    <td>
-                      <a href="{{url('super-admin/classes/view/'. $class->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
-                      <a href="{{url('super-admin/classes/edit/'. $class->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
-                    </td> 
+                    <td><a href="{{ url('super-admin/result/season/'. $season->id. '/class/'. $class->id)}}">{{strtoupper($class->name)}}</a></td>
+                    @if(!isset($results) && empty($results))
+                      
+                      <td>
+                        @if($class->teacher_id == 0)
+                          <a href="{{ url('/super-admin/classes/assign-teacher/'. $class->id) }}" class="text-primary">Unassigned</a>
+                        @else
+                          <a href="{{ url('/super-admin/teacher/profile/'. $class->teacher_id) }}" class="text-info">{{$class->teacher($class->teacher_id)->fullname}} </a>
+                        @endif
+                      </td>
+
+                    
+
+                      <td>
+                      
+                        <a href="{{url('super-admin/classes/view/'. $class->id)}}" class="text-primary"><i class="icon icon-user"></i></a> | 
+                        <a href="{{url('super-admin/classes/edit/'. $class->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
+                      
+                      </td> 
+                    @endif
                     
                   </tr>
                   @endforeach

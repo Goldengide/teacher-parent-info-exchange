@@ -5,19 +5,14 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">...</h4>
+          <h4 class="page-title">{{strtoupper($class->name)}}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
-            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
-            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
-            @if(!$seasonIsSet)
-              <li class="active">---</li>
-              
-            @else
-              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
-            @endif
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <li><a href="{{ url('teacher/dashboard')}}">Dashboard</a></li>
+            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -26,13 +21,13 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
-            <h3 class="box-title m-b-0">Subjects</h3>
-            @if(!isset($results) || empty($results))
-              
-              <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/upload')}}">Upload Subjects</a></p>
-              <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/new')}}">Add New Subject</a></p>
-            
-            @endif
+            <h3 class="box-title m-b-0">Subject: {{$subject->name}}</h3>
+            <h3 class="box-title m-b-0">Class: {{$class->name}}</h3>
+            <h3 class="box-title m-b-0">
+                @if($results[1]->approved) 
+                  This result has been approved <i class="icon icon-mark"></i>
+                @endif
+            </h3>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -42,46 +37,48 @@
             <table id="myTable" class="table table-striped">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Short Name</th>
-                  <th>Action</th>
+                  <th>Student Name</th>
+                  <th>Assessment</th>
+                  <th>Exam Score</th>
+                  <th>Total</th>
+                  <!-- <th>Action</th> -->
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Name</th>
-                  <th>Short Name</th>
-                  <th>Action</th>
+                  <th>Average Score: {{$resultAverage}}</th>
+                  <th> </th>
+                  <th>
+                    <form>
+                      {{crsf_f}}
+                      <input type="hidden" name="class_id" value="{{$class->id}}">
+                      <input type="hidden" name="subject_id" value="{{$subject->id}}">
+                      <input type="hidden" name="season_id" value="{{$season->id}}">
+                      <button class="btn btn-md btn-outline btn-success" type="submit">Approve Result</button>
+                    </form>
+                    <a href="{{ url('/super-admin/results/approve')}}"></a></th>
+                  <th><a href="{{ url('/super-admin/results/reject')}}">Reject  Result</a></th>
                 </tr>
               </tfoot>
               <tbody>
-                @if(count($subjects) < 1)
-                  <td colspan="2">No subject data has been uploaded so far. Please upload</td>
+                @if(count($results) < 1)
+                  <td colspan="5">No student data has been uploaded so far. Please upload</td>
                 @else
-                  @foreach($subjects as $subject)
+                  @foreach($results as $result)
                   <tr>
-                    <td>{{$subject->name}}</td>
-                    <td>{{$subject->short_name}}</td>
-                    <td>
-                      @if(!isset($results) && empty($results))
-                          <a href="{{url('super-admin/subject/edit/'. $subject->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
-                      @else
-                        
-                          <span class="text-default">
-                            @if($subject->result($class->id, $subject->id, $season->id)->times_uploaded > 0)
-                              [{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]  | 
-                            @endif
-                          </span>
-                      <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
-                      
-                      @endif
-                    </td> 
+                    <td>{{$result->student($result->student_id)->student_name}}</td>
+                    <td>{{$result->assessment}}</td>
+                    <td>{{$result->exam_score}}</td>
+                    <td>{{intval($result->assessment) + intval($result->exam_score)}}</td>
+                    <!-- <td> -->
+                      <!-- <a href="{{url('super-admin/result/edit/'. $result->id)}}" class="text-info"><i class="icon icon-pencil"></i></a>   -->
+                        <!-- <a href="{{url('teacher/result/view/'. $result->id )}}" class="text-info"><i class="ti-user"></i>View Result</a> -->
+                    <!-- </td>  -->
                     
                   </tr>
                   @endforeach
                 @endif
               </tbody>
-              
             </table>
             </div>
           </div>

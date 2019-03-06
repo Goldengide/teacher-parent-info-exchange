@@ -10,9 +10,14 @@
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
-            <!-- <li><a href="#">Dashboard</a></li> -->
-            <!-- <li><a href="#">Teacher</a></li> -->
-            <!-- <li class="active">Student Index Page</li> -->
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
+            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
+            @if(!$seasonIsSet)
+              <li class="active">---</li>
+              
+            @else
+              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @endif
           </ol>
         </div>
         <!-- /.col-lg-12 -->

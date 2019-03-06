@@ -22,7 +22,7 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Subjects</h3>
-            <p class="text-muted m-b-30"><a href="{{url('/teacher/students/new')}}">Add New Subjects</a></p>
+            <!-- <p class="text-muted m-b-30"><a href="{{url('/teacher/students/new')}}">Add New Subjects</a></p> -->
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -53,7 +53,12 @@
                     <td>{{$subject->name}}</td>
                     <td>{{$subject->short_name}}</td>
                     <td>
-                      <a href="{{url('teacher/result/upload/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info"><i class="ti-upload"></i>Upload Result</a> [ {{$subject->timesUploaded($class->id, $subject->id, $season->id)}} ] | <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info"><i class="ti-upload"></i>View Result</a>
+                      <a href="{{url('teacher/result/upload/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-primary" title="Upload Result"><i class="ti-upload"></i></a> 
+                       
+                      @if(!empty($subject->result($class->id, $subject->id, $season->id)))
+                        <span class="text-default">[{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]</span>
+                       | <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
+                      @endif
                     </td> 
                     
                   </tr>

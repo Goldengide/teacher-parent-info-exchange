@@ -16,7 +16,10 @@ class CreateClassSummariesTable extends Migration
             $table->increments('id');
             $table->integer('class_id');
             $table->integer('subject_id');
+            $table->integer('season_id');
             $table->integer('average_performance');
+            $table->integer('best_performance');
+            $table->integer('lowest_performance');
             $table->text('comment');
             $table->timestamps();
         });
@@ -28,7 +31,7 @@ class CreateClassSummariesTable extends Migration
      * Reverse the migrations.
      *
      * @return void
-     */
+     */ 
     public function down()
     {
         Schema::drop('class_summaries');

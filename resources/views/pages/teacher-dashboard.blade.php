@@ -50,7 +50,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">GO</h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{ url('/teacher/subjects')}}">GO</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Upload Result</h4>

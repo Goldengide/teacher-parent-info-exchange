@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box p-l-20 p-r-20">
-            <h3 class="box-title m-b-0">Add Class</h3>
+            <h3 class="box-title m-b-0">Assign Class</h3>
             @if(count($errors) > 0)
 
               <ul class="alert alert-danger">
@@ -46,23 +46,17 @@
 
             <div class="row">
               <div class="col-md-12">
-                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/classes/new')}}">
+                <form class="form-material form-horizontal" method="post" action="{{url('super-admin/teacher/assign-class')}}">
                   {{csrf_field()}}
-                  <div class="form-group">
-                    <label class="col-md-12">Class<span class="help"> e.g J5</span></label>
-                    <div class="col-md-12">
-                      <input type="text" class="form-control form-control-line" name="name">
-                    </div>
-                  </div>
+                  <input type="hidden" name="id" value="{{$teacher->id}}">
                   
                   
                   <div class="form-group">
-                    <label class="col-md-12">Assigned Teacher</label>
+                    <label class="col-md-12">Assigned Class</label>
                     <div class="col-md-12">
-                      <select class="form-control" name="teacher_id">
-                        <option value="0">None</option>
-                        @foreach ($teachers as $teacher) 
-                          <option value="{{$teacher->id}}">{{$teacher->fullname}}</option>
+                      <select class="form-control" name="class_id">
+                        @foreach ($classes as $class) 
+                          <option value="{{$class->id}}">{{strtoupper($class->name)}}</option>
                         @endforeach
                       </select>
                     </div>
@@ -71,7 +65,7 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-lg btn-success">Submit</button>
-                      <a href="{{url('/super-admin/classes')}}" class="btn btn-lg btn-outline btn-default">Go Back</a>
+                      <a href="{{url('/super-admin/teacher/profile/'. $teacher->id)}}" class="btn btn-lg btn-outline btn-default">Go Back</a>
                     </div>
                   </div>
                 </form>
@@ -84,6 +78,11 @@
     <!-- /.container-fluid -->
   </div>
   <!-- /#page-wrapper -->
+@endsection
+@section('title')
+  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+    <h4 class="page-title">{{'title'}}</h4>
+  </div>
 @endsection
 @section('other-scripts')
   <script src="{{URL::asset("plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js")}}"></script>

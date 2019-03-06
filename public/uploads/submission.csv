@@ -1,22 +1,22 @@
-SN, Student Name, ID No, Assessment, Exam Score
-1,  AMOWOGBAJE Eunice Babalola,1,30,0
-2, AJAYI Kehinde Festus,2,18,0
-3, ALAO Titus badmus,3,20,0
-4, LAYI Glover Faith,4,23,0
-5, LEO kintus fayi,5,25,0
-6, SANNI kasali seyi,6,23,0
-7, FEMI Temi Sam,7,12,0
-8, AKILLA Yemi segun,8,24,0
-9, MAKINWA Mercy Leye,9,26,0
-10, KAYODE Olami Muyiwa,10,28,0
-11, AJAYI Akin Joseph,11,26,0
-12, AFOLABI Samuel Goodness,12,24,0
-13, OLAGUNJU Yinka Adeola,13,15,0
-14, DAPA Kinsley Jonathan,14,14,0
-15, OPE Funmi Glory,15,25,0
-16, SAMUEL Taiwo Femi,16,18,0
-17, LEO Praise Damilola,17,29,0
-18, FAGBAMILA John Akin,18,27,0
-19, ADIMULA Rukayat Funmi,19,28,0
-20, KEHINDE Adewale Kazeem,20,27,0
-21, LASISI Ibrahim Kunle,21,26,0
+sn, parent_name, student_name,Sex,Class, email, phone, phone2, birthdate
+1, Mr. |AMOWOGBAJE Gideon Ifedayo, AMOWOGBAJE Eunice Babalola,Female,1A, amowogbajegideon@gmail.com,8174007780,7045673242, Sep-4
+2,Mrs. |Ajayi Femi Olowabi ,AJAYI Kehinde Festus,Male,1A,ajayifemi@gmail.com,7064428515,8012154856,5-Jan
+3,Mr. |Alao kunmi felix,ALAO Titus badmus,Male,1A,alaokunmi@gmail.com,7056895256,7025632545,8-Jun
+4,Mr. |Layi hindu kanmi,LAYI Glover Faith,Male,1A,layihindu@gmail.com,1852569852,8125658974,10-Mar
+5,Mr. |Leo Lamidi wemimo,LEO kintus fayi,Female,1A,leolamidi@gmail.com,7025632541,8142569874,7-Nov
+6,Mr. |Sanni lateef Ope,SANNI kasali seyi,Male,1A,sannilateef@gmail.com,8025652436,8025652145,4-Nov
+7,Mr. |Femi Seun maxwell,FEMI Temi Sam,Female,1A,femimaxwell@gmail.com,8125698745,7025639858,2-Mar
+8,Mr. |Akilla Samuel Leke,AKILLA Yemi segun,Male,1A,akillasamuel@gmail.com,7025469854,8025658954,3-Jun
+9,Mrs. |Makinwa Grace kemi,MAKINWA Mercy Leye,Female,1A,makinwagrace@gmail.com,8025659856,8025658952,15-Feb
+10,Mrs. |Kayode Lara Funmi,KAYODE Olami Muyiwa,Male,1A,kayodelara@gmail.com,7054258962,8025652541,12-Feb
+11,Mrs. |Ajayi Yetunde Christianah,AJAYI Akin Joseph,Male,1A,ajayibyc@gmail.com,7054254152,7041528963,15-Apr
+12,Mr. |Afolabi Temi Sam,AFOLABI Samuel Goodness,Male,1A,afolabisam@gmail.com,7045124563,7025568956,23-Jul
+13,Mr.|Olagunju Jonathan King,OLAGUNJU Yinka Adeola,Female,1A,olagunjuy@gmail.com,8056231456,8052632145,14-Mar
+14,Mr. |Dapa Felix Glory,DAPA Kinsley Jonathan,Male,1A,dapafelix@gmail.com,8152456985,8125456985,20-Feb
+15,Mr. |Ope Akinwumi Femi,OPE Funmi Glory,Female,1A,opevoa@gmail.com,7054698523,8025698545,22-Aug
+16,Mr. |Samuel Adio Gabriel,SAMUEL Taiwo Femi,Male,1A,samueladio@gmail.com,7058985623,8025632145,15-Oct
+17,Mr. |Leo Segun Melody,LEO Praise Damilola,Male,1A,leosegun@gmail.com,8056241236,7025645263,9-Nov
+18,Mr. |Fagbamila Leke James,FAGBAMILA John Akin,Male,1A,fagbamilag@gmail.com,8025632541,8056234125,19-Nov
+19,Mrs. |Adimula Sadiat Kemi,ADIMULA Rukayat Funmi,Female,1A,adimulalara@gmail.com,8056412563,8025412563,18-Jan
+20,Mrs. |Kehinde Kadijat Ife,KEHINDE Adewale Kazeem,Male,1A,kehindeife@gmail.com,7045214596,7056235641,22-Mar
+21,Mr. |Lasisi Kadri faye,LASISI Ibrahim Kunle,Male,1A,lasisikazeem@gmail.com,8052166582,7045852136,16-Nov

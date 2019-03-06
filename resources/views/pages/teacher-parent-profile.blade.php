@@ -35,14 +35,14 @@
         @if($countChildren > 0)
           <div class="col-sm-12 col-md-5">
             <div class="white-box p-l-20 p-r-20">
-              <div class="row">
+              <div class="row"><?php $sn = 0; ?>
                 <dl class="dl-horizontal">
 
-                  <dt style="text-align: left; white-space: normal;">No of Children In School </dt> <dd>{{ $countChildren }}</dd> <br></br>
+                  <dt style="text-align: left; white-space: normal;">No of Children In School </dt> <dd>{{ $countChildren }}</dd> <br>
 
                   @foreach($students as $student)
-                  
-                    <dt style="text-align: left; white-space: normal;"></dt> <dd><a href="{{ url('/teacher/student/profile/'. $student->student_id) }}">See {{ $student->student_name }} Profile</a></dd> <br></br>
+                    <?php $sn++; ?>
+                    <dt style="text-align: left; white-space: normal;">{{$sn}}</dt> <dd><a href="{{ url('/teacher/students/profile/'. $student->id) }}">See {{ $student->student_name }} Profile</a></dd> <br></br>
 
                     
 

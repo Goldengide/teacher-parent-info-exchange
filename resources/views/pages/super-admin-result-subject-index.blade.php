@@ -1,23 +1,18 @@
-@extends('layouts.super-admin')
+@extends('layouts.teachers')
 @section('content')
   <!-- Page Content -->
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">...</h4>
+          <h4 class="page-title">{{strtoupper($class->name)}}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
-            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
-            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
-            @if(!$seasonIsSet)
-              <li class="active">---</li>
-              
-            @else
-              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
-            @endif
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <li><a href="{{ url('teacher/dashboard')}}">Dashboard</a></li>
+            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -27,12 +22,6 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Subjects</h3>
-            @if(!isset($results) || empty($results))
-              
-              <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/upload')}}">Upload Subjects</a></p>
-              <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/new')}}">Add New Subject</a></p>
-            
-            @endif
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -56,24 +45,18 @@
               </tfoot>
               <tbody>
                 @if(count($subjects) < 1)
-                  <td colspan="2">No subject data has been uploaded so far. Please upload</td>
+                  <td colspan="5">No student data has been uploaded so far. Please upload</td>
                 @else
                   @foreach($subjects as $subject)
                   <tr>
                     <td>{{$subject->name}}</td>
                     <td>{{$subject->short_name}}</td>
                     <td>
-                      @if(!isset($results) && empty($results))
-                          <a href="{{url('super-admin/subject/edit/'. $subject->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
-                      @else
-                        
-                          <span class="text-default">
-                            @if($subject->result($class->id, $subject->id, $season->id)->times_uploaded > 0)
-                              [{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]  | 
-                            @endif
-                          </span>
-                      <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
-                      
+                      <a href="{{url('teacher/result/upload/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-primary" title="Upload Result"><i class="ti-upload"></i></a> 
+                       
+                      @if(!empty($subject->result($class->id, $subject->id, $season->id)))
+                        <span class="text-default">[{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]</span>
+                       | <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
                       @endif
                     </td> 
                     
@@ -81,7 +64,6 @@
                   @endforeach
                 @endif
               </tbody>
-              
             </table>
             </div>
           </div>

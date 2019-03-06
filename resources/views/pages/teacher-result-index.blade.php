@@ -23,6 +23,11 @@
           <div class="white-box">
             <h3 class="box-title m-b-0">Subject: {{$subject->name}}</h3>
             <h3 class="box-title m-b-0">Class: {{$class->name}}</h3>
+            <h3 class="box-title m-b-0">
+                @if($results[1]->approved) 
+                  This result has been approved <i class="icon icon-mark"></i>
+                @endif
+            </h3>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -35,7 +40,9 @@
                   <th>Student Name</th>
                   <th>Assessment</th>
                   <th>Exam Score</th>
-                  <th>Action</th>
+                  @if($results[1]->approved)
+                    <th>Action</th>
+                  @endif
                 </tr>
               </thead>
               <tfoot>
@@ -43,7 +50,9 @@
                   <th>Student Name</th>
                   <th>Assessment</th>
                   <th>Exam Score</th>
-                  <th>Action</th>
+                  @if($results[1]->approved)
+                    <th>Action</th>
+                  @endif
                 </tr>
               </tfoot>
               <tbody>
@@ -52,13 +61,15 @@
                 @else
                   @foreach($results as $result)
                   <tr>
-                    <td>{{$result->student($result->student_id)}}</td>
+                    <td>{{$result->student($result->student_id)->student_name}}</td>
                     <td>{{$result->assessment}}</td>
                     <td>{{$result->exam_score}}</td>
-                    <td>
-                      <a href="{{url('teacher/result/upload/view'. $result->id)}}" class="text-info"><i class="icon icon-user"></i></a>  
-                      <a href="{{url('teacher/result/edit/'. $result->id )}}" class="text-info"><i class="ti-upload"></i>View Result</a>
-                    </td> 
+                    @if(!$result->approved)
+                      <td>
+                        <a href="{{url('teacher/result/edit/'. $result->id)}}" class="text-info"><i class="icon icon-pencil"></i></a>  
+                        <!-- <a href="{{url('teacher/result/view/'. $result->id )}}" class="text-info"><i class="ti-user"></i>View Result</a> -->
+                      </td> 
+                    @endif
                     
                   </tr>
                   @endforeach

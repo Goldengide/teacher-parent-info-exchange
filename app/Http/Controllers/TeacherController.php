@@ -15,7 +15,7 @@ use App\User;
 use App\Season;
 use App\Result;
 use App\StudentDetail;
-
+use App\Repository\DataRepository;
 
 class TeacherController extends Controller
 {
@@ -211,6 +211,7 @@ class TeacherController extends Controller
 
 
     public function parents() {
+        // weneedto adjust this code to be able to display parent due to class
         $parents = User::where('role', 'parent')->get();
         return view('pages.teacher-parent-index', compact('parents'));
     }
@@ -243,6 +244,7 @@ class TeacherController extends Controller
         $subjects = Subject::all();
         $season = Season::where('current', 1)->first();
         $class = ClassTable::where('teacher_id', Auth::user()->id)->first();
+        // return $subject->result($class->id, $subject->id, $season->id);
         return view('pages.teacher-subjects-index', compact('subjects', 'class', 'season'));
     }
 
@@ -260,6 +262,13 @@ class TeacherController extends Controller
         $classId = $request->class_id;
         $seasonId = $request->season_id;
         $file = $request->file('file');
+        $class = ClassTable::where('id', $classId)->first();
+        $subjectName = Subject::where('id', $subjectId)->first();
+        $season = Season::where('id', $seasonId)->first();
+        $dataRepository = new DataRepository;
+        $generatedfilename = $dataRepository->replaceDelimeter($season->session, "/", "_");
+        $generatedfilename .= "_".$dataRepository->sequenceNumber($season->term_no). "_Term_";
+        $generatedfilename .= $class->name."_".$subjectName."_"."results.csv";
 
         /*$this->validate($request, [
             'file' => 'required|unique:posts|max:255',
@@ -284,8 +293,9 @@ class TeacherController extends Controller
                         $times_uploaded = Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->first()->times_uploaded + 1;
                         Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->delete();
                     }
-                    $file->move("uploads/", "submission.csv");
-                    $content = File::get("uploads/submission.csv");
+                    $resultFileName = 
+                    $file->move("uploads/datas/", "generatedfilename.csv");
+                    $content = File::get("uploads/datas/generatedfilename.csv");
                     $contentArray = explode("\n", $content);
                     $dataUpload = array();
                     $dataColumns = array();
@@ -297,12 +307,15 @@ class TeacherController extends Controller
                             $dataColumns['subject_id'] = $subjectId; 
                             $dataColumns['season_id'] = $seasonId; 
                             $dataColumns['class_id'] = $classId; 
-                            $dataColumns['teacher_id'] = $teacherId; 
+                            $dataColumns['teacher_id'] = $class->teacher_id; 
                             $dataColumns['assessment'] = $contentSubArray[3]; 
                             $dataColumns['exam_score'] = $contentSubArray[4]; 
                             $dataColumns['times_uploaded'] = $times_uploaded; 
                             $dataUpload[] = $dataColumns;
                             
+                        }
+                        else{
+                            return redirect()->back()->with(['message'=> 'Format not correct', 'style' => 'alert-danger']);
                         }
                         // return $dataUpload;
 
@@ -314,6 +327,10 @@ class TeacherController extends Controller
                     if($operationUpload) {
                         return redirect('/teacher/subjects')->with(['message'=> 'Result has been uploaded Successful', 'style' => 'alert-success']);
                     }
+                    else {
+                        return redirect('/teacher/subjects')->with(['message'=> 'Ooops! An Error Occured', 'style' => 'alert-danger']);
+
+                    }
                 }
             }
         }
@@ -324,7 +341,7 @@ class TeacherController extends Controller
         $subject = Subject::where('id', $subjectId)->first();
         $class = ClassTable::where('id', $classId)->first();
         $results = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('subject_id', $subjectId)->get();
-        return view('pages.teacher-result-index', compact('results', 'subject'));
+        return view('pages.teacher-result-index', compact('results', 'subject', 'class'));
     }
 
     public function viewResult($id) {
@@ -338,10 +355,18 @@ class TeacherController extends Controller
 
     }
 
+    public function viewResultForStudent($id, $seasonId) {
+        $student = Student::where('id', $id)->first();
+        $results = Result::where('student_id', $id)->where('season_id', $seasonId)->get();
+        return view('pages.teacher-students-result-index', compact('results', 'student'));
+    }
+
+
     public function editResultAction(Request $request) {
+        $id = $request->id;
         $result = Result::find($id);
         $result->assessment = $request->assessment;
-        $result->exam = $request->exam;
+        $result->exam_score = $request->exam_score;
         $result->save();
 
 

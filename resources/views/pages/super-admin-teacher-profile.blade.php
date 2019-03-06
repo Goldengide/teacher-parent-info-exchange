@@ -8,9 +8,14 @@
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-            <li><a href="{{ url('/super-admin/dashboard')}}">Dashboard</a></li>
-            <li><a href="{{ url('/super-admin/teachers')}}">Back to the Teacher's List</a></li>
-            <li class="active"> {{$teacher->firstname}} </li>
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
+            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
+            @if(!$seasonIsSet)
+              <li class="active">---</li>
+              
+            @else
+              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @endif
           </ol>
         </div>
         <!-- /.col-lg-12 -->
@@ -36,7 +41,14 @@
             <div class="row">
               <dl class="dl-horizontal">
                 
-                <dt style="text-align: left; white-space: normal;">Assigned Class: </dt> <dd>J5</dd> <br></br>
+                <dt style="text-align: left; white-space: normal;">Assigned Class: </dt> 
+                <dd>
+                  @if(empty($class))
+                  <a href="{{ url('/super-admin/teacher/assign-class/'. $teacher->id) }}">Assign A Class</a>
+                  @else
+                  {{strtoupper($class->name)}} <a href="{{ url('/super-admin/teacher/assign-class/'. $class->teacher_id) }}">(Change Class)</a>
+                  @endif
+                </dd> <br></br>
 
                 <dt style="text-align: left; white-space: normal;">Phone:</dt> <dd>{{ $teacher->phone }}</dd> <br><br>
 

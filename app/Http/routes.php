@@ -57,16 +57,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 
 
 	Route::get('/result/seasons/{id}', 'TeacherController@seasonforResult');
-	Route::get('/result/seasons/{seasonId}/subject/{subjectId}', 'TeacherController@subjectforResult');
 
 	Route::get('/result/upload/{seasonId}/{classId}/{subjectId}', 'TeacherController@uploadResult');
 	Route::post('/result/upload', 'TeacherController@uploadResultAction');
 
-	Route::get('/result/view/{seasonId}/{classId}/{subjectId}', 'TeacherController@resultIndex');
+	Route::get('/result/view/{seasonId}/{classId}/{subjectId}', 'AdminController@resultIndex');
 
 	Route::get('/result/view/{id}', 'TeacherController@viewResult');
 	Route::get('/result/edit/{id}', 'TeacherController@editResult');
 	Route::post('/result/edit', 'TeacherController@editResultAction');
+
+	Route::get('/result/student/view/{id}/{seasonId}', 'TeacherController@viewResultForStudent');
 
 	
 	Route::get('/parents', 'TeacherController@parents');
@@ -95,6 +96,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
 	Route::get('/teacher/edit/{id}', 'AdminController@updateTeacherPage');
 	Route::post('/teacher/edit', 'AdminController@updateTeacherAction');
+	Route::get('/teacher/assign-class/{id}', 'AdminController@assignTeacherClassPage');
+	Route::post('/teacher/assign-class', 'AdminController@assignTeacherClassAction');
 	Route::get('/parent/edit/{id}', 'AdminController@updateParentPage');
 	Route::post('/parent/edit', 'AdminController@updateParentAction');
 
@@ -161,13 +164,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	// Result Upload
 
 	Route::get('/result/session', 'AdminController@seasonforResult');
-	Route::get('/result/seasons/{seasonId}/class/{classId}', 'AdminController@classForResult');
-	Route::get('/result/seasons/{seasonId}/class/{classId}/subject/{subjectId}', 'AdminController@subjectforResult');
+	Route::get('/result/season/{seasonId}/', 'AdminController@classForResult');
+	Route::get('/result/season/{seasonId}/class/{classId}', 'AdminController@subjectsforResult');
+	Route::get('/result/view/{seasonId}/{classId}/{subjectId}', 'AdminController@resultIndex');
 
 	Route::get('/result/upload/{seasonId}/{classId}/{subjectId}', 'AdminController@uploadResult');
 	Route::post('/result/upload', 'AdminController@uploadResultAction');
 
-	Route::get('/result/view/{id}', 'AdminController@viewResult');
+	Route::get('/result/details/{id}', 'AdminController@viewResult');
 	Route::get('/result/edit/{id}', 'AdminController@editResult');
 	Route::post('/result/edit', 'AdminController@editResultAction');
 

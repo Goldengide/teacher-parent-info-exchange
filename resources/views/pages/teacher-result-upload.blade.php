@@ -56,8 +56,8 @@
                   
                   <div class="form-group">
                     <div class="col-md-12">
-                      <button type="submit" class="btn btn-lg btn-success">Upload</button>
-                      <a href="{{url('/teacher/subjects')}}" class="btn btn-lg btn-info">Go Back</a>
+                      <button type="submit" class="btn btn-lg btn-info">Upload</button>
+                      <a href="{{url('/teacher/subjects')}}" class="btn btn-lg btn-outline btn-default">Go Back</a>
                     </div>
                   </div>
                 </form>

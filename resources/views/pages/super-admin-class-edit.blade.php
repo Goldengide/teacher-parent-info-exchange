@@ -8,9 +8,14 @@
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
+            <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); $seasonIsSet = DB::table('seasons')->where('current', 1)->count();?>
             <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
-            <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @if(!$seasonIsSet)
+              <li class="active">---</li>
+              
+            @else
+              <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
+            @endif
           </ol>
         </div>
         <!-- /.col-lg-12 -->
