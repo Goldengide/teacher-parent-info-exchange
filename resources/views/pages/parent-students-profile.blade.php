@@ -53,6 +53,9 @@
                 <dt style="text-align: left; white-space: normal;">Class: </dt> <dd>{{ strtoupper($child->classTable($child->class_id)->name) }}</dd> <br></br>
 
                 <dt style="text-align: left; white-space: normal;">Teacher </dt> <dd> {{ $child->classTable($child->class_id)->teacher->fullname }}<a href="{{url('/parent/teacher/profile/'. $child->classTable($child->class_id)->teacher->id)}}"><i class="icon icon-user"></i></a></dd> <br></br>
+                @if($showResult)
+                <dt style="text-align: left; white-space: normal;"><a href="{{ url('/parent/child/result/'.$child->id)}}">Check Result</a></dt> <br></br>
+                @endif
 
               </dl>
             </div>

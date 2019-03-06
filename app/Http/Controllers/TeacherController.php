@@ -263,12 +263,13 @@ class TeacherController extends Controller
         $seasonId = $request->season_id;
         $file = $request->file('file');
         $class = ClassTable::where('id', $classId)->first();
-        $subjectName = Subject::where('id', $subjectId)->first();
+        $subject = Subject::where('id', $subjectId)->first();
         $season = Season::where('id', $seasonId)->first();
         $dataRepository = new DataRepository;
         $generatedfilename = $dataRepository->replaceDelimeter($season->session, "/", "_");
-        $generatedfilename .= "_".$dataRepository->sequenceNumber($season->term_no). "_Term_";
-        $generatedfilename .= $class->name."_".$subjectName."_"."results.csv";
+        $generatedfilename .= "_Term_".$season->term_no."_";
+        $generatedfilename .= $class->name."_".$subject->name."_"."results.csv";
+        // return $generatedfilename;
 
         /*$this->validate($request, [
             'file' => 'required|unique:posts|max:255',
@@ -294,8 +295,8 @@ class TeacherController extends Controller
                         Result::where('subject_id', $subjectId)->where('class_id', $classId)->where('season_id', $seasonId)->delete();
                     }
                     $resultFileName = 
-                    $file->move("uploads/datas/", "generatedfilename.csv");
-                    $content = File::get("uploads/datas/generatedfilename.csv");
+                    $file->move("uploads/datas/", $generatedfilename.".csv");
+                    $content = File::get("uploads/datas/". $generatedfilename. ".csv");
                     $contentArray = explode("\n", $content);
                     $dataUpload = array();
                     $dataColumns = array();
@@ -310,6 +311,7 @@ class TeacherController extends Controller
                             $dataColumns['teacher_id'] = $class->teacher_id; 
                             $dataColumns['assessment'] = $contentSubArray[3]; 
                             $dataColumns['exam_score'] = $contentSubArray[4]; 
+                            $dataColumns['total'] = intval($contentSubArray[3]) + intval($contentSubArray[4]); 
                             $dataColumns['times_uploaded'] = $times_uploaded; 
                             $dataUpload[] = $dataColumns;
                             
@@ -377,6 +379,13 @@ class TeacherController extends Controller
             return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
         }
 
+    }
+
+    public function showStudentResult($studenId) {
+        $summary = StudentSummary::where('student_id', $student_id)->first();
+        $resultObject = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('student_id', $studentId);
+        $results = $resultObject->orderBy('subject')->get();
+        return view('pages.teacher-students-result-index', compact('results', 'summary'));
     }
 
     

@@ -16,6 +16,7 @@ use App\Season;
 use App\Result;
 use App\Subject;
 use App\StudentSummary;
+use App\ClassSummary;
 
 class AdminController extends Controller
 {
@@ -639,7 +640,7 @@ class AdminController extends Controller
     public function classForResult($seasonId) {
         $season = Season::where('id', $seasonId)->first();
         $classes = ClassTable::all();
-        f$results = true;
+        $results = true;
         return view('pages.super-admin-class-index', compact('classes', 'season', 'results'));
     }
     public function subjectsForResult($seasonId, $classId) {
@@ -685,12 +686,13 @@ class AdminController extends Controller
         $classId = $request->class_id;
 
         $class = ClassTable::where('id', $classId)->first();
-        $subjectName = Subject::where('id', $subjectId)->value('name');
+        $subject = Subject::where('id', $subjectId)->first();
         $season = Subject::where('id', $seasonId)->first();
         $dataRepository = new DataRepository;
         $generatedfilename = "admin_".$dataRepository->replaceDelimeter($season->session, "/", "_");
-        $generatedfilename .= "_".$dataRepository->sequenceNumber($season->term_no). "_Term_";
-        $generatedfilename .= $class->name."_".$subjectName."_"."results.csv";
+        $generatedfilename .= "_Term_".$season->term_no."_";
+        $generatedfilename .= $class->name."_".$subject->name."_"."results.csv";
+        // return $generatedfilename;
 
         $file = $request->file('file');
 
@@ -756,9 +758,12 @@ class AdminController extends Controller
 
 
     public function seasonforResult() {
-        $seasons = Season::where('ended', true)->get();
+        $seasons = Season::all();
         $currentSeason = Season::where('current', true);
-        return view('pages.super-admin-parent-update', compact('seasons', 'currentSeason'));
+        $results = true;
+        $activeSession = 0;
+        $activeTerm = 0;
+        return view('pages.super-admin-seasons-index', compact('seasons', 'currentSeason', 'results', 'activeSession', 'activeTerm'));
     }
 
     
@@ -792,7 +797,7 @@ class AdminController extends Controller
 
     }
 
-    public function approveResult(Request $resquest) {
+    public function approveResult(Request $request) {
         $seasonId = $request->season_id;
         $classId = $request->class_id;
         $subjectId = $request->subject_id;
@@ -821,6 +826,9 @@ class AdminController extends Controller
         // $classSummary->comment = "resultAverage";
         $isSaved = $classSummary->save();
 
+        $resultApprove = $resultObject->update(['approved' => 1]);
+
+
         if ($isSaved) {
             return redirect()->back()->with(['message' => 'Result Successfully Approved', 'style' => 'alert-success']);
         }
@@ -839,7 +847,7 @@ class AdminController extends Controller
         $bestResult = $studentObject->
         $studentSummary= new StudentSummary;
         $studentSummary->student_id = $studentId;
-        $studentSummary->season_id = $season_id
+        $studentSummary->season_id = $season_id;
         $studentSummary->overall_percentage = $bestResult->sum('total')/$bestResult->count() * 100;
         $studentSummary->best_score = $bestResult->max('total');
         $studentSummary->worst_score = $bestResult->min('total');

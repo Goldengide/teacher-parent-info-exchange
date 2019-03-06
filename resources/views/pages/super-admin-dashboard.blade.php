@@ -151,10 +151,10 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="">0</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/super-admin/result/session')}}">Go</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">New Messages</h4>
+                    <h4 class="text-muted text-center text-info vb">Check Results</h4>
                   </div>
                 </div>
               </div>

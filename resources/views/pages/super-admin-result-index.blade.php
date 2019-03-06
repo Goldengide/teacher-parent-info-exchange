@@ -49,15 +49,23 @@
                   <th>Average Score: {{$resultAverage}}</th>
                   <th> </th>
                   <th>
-                    <form>
-                      {{crsf_f}}
+                    <form method="post" action="{{url('super-admin/result/approve')}}">
+                      {{csrf_field()}}
                       <input type="hidden" name="class_id" value="{{$class->id}}">
                       <input type="hidden" name="subject_id" value="{{$subject->id}}">
                       <input type="hidden" name="season_id" value="{{$season->id}}">
                       <button class="btn btn-md btn-outline btn-success" type="submit">Approve Result</button>
                     </form>
-                    <a href="{{ url('/super-admin/results/approve')}}"></a></th>
-                  <th><a href="{{ url('/super-admin/results/reject')}}">Reject  Result</a></th>
+                  </th>
+                  <th></th>
+                  <!-- <th><form method="post" action="{{url('super-admin/result/reject')}}">
+                      {{csrf_field()}}
+                      <input type="hidden" name="class_id" value="{{$class->id}}">
+                      <input type="hidden" name="subject_id" value="{{$subject->id}}">
+                      <input type="hidden" name="season_id" value="{{$season->id}}">
+                      <button class="btn btn-md btn-outline btn-success" type="submit">Approve Result</button>
+                    </form>
+                  </th> -->
                 </tr>
               </tfoot>
               <tbody>
