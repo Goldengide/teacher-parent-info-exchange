@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'parent'], function() {
 	Route::get('/dashboard', 'ParentController@dashboard');
 	Route::get('/child/profile', 'ParentController@dashboard');
 	// Route::get('/child/profile/{id}', 'ParentController@dashboard');
-	Route::get('/child/result/{id}', 'ParentController@showChildResult');
+	Route::get('/child/result/{id}', 'ParentController@viewChildResult');
 	Route::post('/child/profile/pics', 'ParentController@profilePicsUpdateAction');
 	Route::get('/teacher/profile/{id}', 'ParentController@teacherProfile');
 
@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 	Route::get('/result/upload/{seasonId}/{classId}/{subjectId}', 'TeacherController@uploadResult');
 	Route::post('/result/upload', 'TeacherController@uploadResultAction');
 
-	Route::get('/result/view/{seasonId}/{classId}/{subjectId}', 'AdminController@resultIndex');
+	Route::get('/result/view/{seasonId}/{classId}/{subjectId}', 'TeacherController@resultIndex');
 
 	Route::get('/result/view/{id}', 'TeacherController@viewResult');
 	Route::get('/result/edit/{id}', 'TeacherController@editResult');

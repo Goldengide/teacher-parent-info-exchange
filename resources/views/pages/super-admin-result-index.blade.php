@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">{{strtoupper($class->name)}}</h4>
+          <h4 class="page-title"><a href="{{ url('super-admin/result/season/'.$season->id.'/class/'. $class->id)}}">{{strtoupper($class->name)}}</a></h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
@@ -22,7 +22,7 @@
         <div class="col-sm-12">
           <div class="white-box">
             <h3 class="box-title m-b-0">Subject: {{$subject->name}}</h3>
-            <h3 class="box-title m-b-0">Class: {{$class->name}}</h3>
+            <h3 class="box-title m-b-0"><a href="{{ url('super-admin/result/season/'.$season->id.'/class/'. $class->id)}}">Class: {{$class->name}}</a></h3>
             <h3 class="box-title m-b-0">
                 @if($results[1]->approved) 
                   This result has been approved <i class="icon icon-mark"></i>
@@ -49,13 +49,17 @@
                   <th>Average Score: {{$resultAverage}}</th>
                   <th> </th>
                   <th>
-                    <form method="post" action="{{url('super-admin/result/approve')}}">
-                      {{csrf_field()}}
-                      <input type="hidden" name="class_id" value="{{$class->id}}">
-                      <input type="hidden" name="subject_id" value="{{$subject->id}}">
-                      <input type="hidden" name="season_id" value="{{$season->id}}">
-                      <button class="btn btn-md btn-outline btn-success" type="submit">Approve Result</button>
-                    </form>
+                    @if($resultInfo->approved)
+                      <span class="text-success">Result Approved</span>
+                    @else
+                      <form method="post" action="{{url('super-admin/result/approve')}}">
+                        {{csrf_field()}}
+                        <input type="hidden" name="class_id" value="{{$class->id}}">
+                        <input type="hidden" name="subject_id" value="{{$subject->id}}">
+                        <input type="hidden" name="season_id" value="{{$season->id}}">
+                        <button class="btn btn-md btn-outline btn-success" type="submit">Approve Result</button>
+                      </form>
+                    @endif
                   </th>
                   <th></th>
                   <!-- <th><form method="post" action="{{url('super-admin/result/reject')}}">

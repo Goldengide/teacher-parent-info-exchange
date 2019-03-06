@@ -8,6 +8,9 @@ use App\Http\Requests;
 
 use App\User;
 use App\Student;
+use App\Season;
+use App\StudentSummary;
+use App\Result;
 use App\StudentDetail;
 use Auth;
 
@@ -38,20 +41,23 @@ class ParentController extends Controller
     }
 
     public function viewChild($studentId) {
-        $showResult = false;
         $season = Season::where('current', 1)->first();
         $seasonId = $season->id;
         $result = $StudentSummary::where('student_id', $studentId)->where('season_id', $seasonId)->count();
         $countChildren = Student::where('parent_name', Auth::user()->fullname)->count();
         $child = Student::where('student_id', $studentId);
-        return view('pages.parent-students-profile', compact('child', 'countChildren', 'showResult'));
+        return view('pages.parent-students-profile', compact('child', 'countChildren'));
     }
     public function logAComplaintToThePoprietor() {}
     public function viewChildResult($id) {
-        $summary = StudentSummary::where('student_id', $student_id)->first();
-        $resultObject = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('student_id', $studentId);
-        $results = $resultObject->orderBy('subject')->get();
-        return view('pages.parent-students-result-index', compact('results', 'summary'));
+
+        $seasonId = Season::where('current', true)->first()->id;
+        $student = Student::where('id', $id)->first();
+        $summary = StudentSummary::where('student_id', $id)->where('season_id', $seasonId)->first();
+        $resultObject = Result::where('season_id', $seasonId)->where('class_id', $student->class_id)->where('student_id', $id);
+        $results = $resultObject->orderBy('subject_id')->get();
+        // return $results;
+        return view('pages.parent-students-result-index', compact('results', 'summary', 'student'));
     }
     // public function message() {}
     public function profilePicsUpdatePage($id) {

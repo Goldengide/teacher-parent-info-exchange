@@ -68,8 +68,14 @@
                       @if ($season->status == true)
                         @if(!isset($results))
                           Active Season
-                        @else 
-                          <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                        @else
+                          @if($season->ended == 1)
+                            <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                          @elseif($season->current == 1)
+                            <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                          @else
+                          <span class="icon icon-unlock">---</span>
+                          @endif
                         
                         @endif
                       
@@ -86,7 +92,13 @@
                             <a href="{{url('super-admin/season/activate/'. $season->id)}}" class="text-primary" title=""><i class="icon icon-unlock"></i>Activate</a>
                           @endif
                         @else
-                          <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                          @if($season->ended == 1)
+                            <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                          @elseif($season->current == 1)
+                            <a href="{{ url('/super-admin/result/season/'. $season->id)}}"><span class="icon icon-unlock">Enter</span></a>
+                          @else
+                          <span class="icon icon-unlock">---</span>
+                          @endif
                         @endif
                       @endif
                       @if(!isset($results))

@@ -1,11 +1,11 @@
-@extends('layouts.teachers')
+@extends('layouts.super-admin')
 @section('content')
   <!-- Page Content -->
   <div id="page-wrapper">
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">{{strtoupper($class->name)}}</h4>
+          <h4 class="page-title">{{strtoupper($student->classTable($student->class_id)->name)}}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
@@ -21,13 +21,9 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
-            <h3 class="box-title m-b-0">Subject: {{$subject->name}}</h3>
-            <h3 class="box-title m-b-0">Class: {{$class->name}}</h3>
-            <h3 class="box-title m-b-0">
-                @if($results[1]->approved) 
-                  This result has been approved <i class="icon icon-mark"></i>
-                @endif
-            </h3>
+            <h3 class="box-title m-b-0"> {{$student->student_name}}</h3>
+            <h3 class="box-title m-b-0">Class: {{$student->classTable($student->class_id)->name}}</h3>
+           
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -37,22 +33,19 @@
             <table id="myTable" class="table table-striped">
               <thead>
                 <tr>
-                  <th>Student Name</th>
+                  <th>Subject</th>
                   <th>Assessment</th>
                   <th>Exam Score</th>
-                  @if(!$results[1]->approved)
-                    <th>Action</th>
-                  @endif
+                  <th>Total</th>
+                  <!-- <th>Action</th> -->
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Student Name</th>
-                  <th>Assessment</th>
-                  <th>Exam Score</th>
-                  @if(!$results[1]->approved)
-                    <th>Action</th>
-                  @endif
+                  <th>Overall Percentage: {{"??"}}</th>
+                  <th>Best Score: {{"??"}}</th>
+                  <th>Worst Score {{"??"}}</th>
+                  <th></th>
                 </tr>
               </tfoot>
               <tbody>
@@ -61,15 +54,14 @@
                 @else
                   @foreach($results as $result)
                   <tr>
-                    <td>{{$result->student($result->student_id)->student_name}}</td>
+                    <td>{{$result->subject($result->subject_id)->name}}</td>
                     <td>{{$result->assessment}}</td>
                     <td>{{$result->exam_score}}</td>
-                    @if(!$result->approved)
-                      <td>
-                        <a href="{{url('teacher/result/edit/'. $result->id)}}" class="text-info"><i class="icon icon-pencil"></i></a>  
+                    <td>{{$result->total}}</td>
+                    <!-- <td> -->
+                      <!-- <a href="{{url('super-admin/result/edit/'. $result->id)}}" class="text-info"><i class="icon icon-pencil"></i></a>   -->
                         <!-- <a href="{{url('teacher/result/view/'. $result->id )}}" class="text-info"><i class="ti-user"></i>View Result</a> -->
-                      </td> 
-                    @endif
+                    <!-- </td>  -->
                     
                   </tr>
                   @endforeach

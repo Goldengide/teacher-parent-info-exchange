@@ -660,12 +660,13 @@ class AdminController extends Controller
         $season = Season::where('id', $seasonId)->first();
         $resultObject = Result::where('season_id', $seasonId)->where('class_id', $classId)->where('subject_id', $subjectId);
         $results = $resultObject->get();
+        $resultInfo = $resultObject->first();
         $resultSumAssessment = $resultObject->sum('assessment');
         $resultSumExam = $resultObject->sum('exam_score');
         $resultCount = $resultObject->count();
         $resultAverage = ($resultSumAssessment + $resultSumExam)/$resultCount;
         $resultAverage = round($resultAverage);
-        return view('pages.super-admin-result-index', compact('results', 'subject', 'class', 'season', 'resultAverage'));
+        return view('pages.super-admin-result-index', compact('results', 'subject', 'class', 'season', 'resultAverage', 'resultInfo'));
     }
 
     public function uploadResult($seasonId, $classId, $subjectId) {
@@ -674,6 +675,8 @@ class AdminController extends Controller
         $class = ClassTable::where('id', $classId)->first(); 
         return view('pages.super-admin-result-upload', compact('subject', 'class', 'season'));
     }
+
+
 
 
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\ClassTable;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,10 +17,7 @@ class Student extends Model
             $class->teacher->othernames = "No Teacher";
             $class->teacher->id = "No Teacher";
         }
-        else {
-            $class->teacher = User::where('id', $class->teacher_id)->first();
-        }
-    	return $class;
+        return $class;
     }
 
     public function parent($parent_name) {

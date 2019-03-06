@@ -62,6 +62,38 @@
         </div>
       </div>
       <!-- /.row -->
+
+      <!-- .row -->
+      <div class="row">
+        <div class="col-sm-12 col-md-4">
+          <div class="white-box p-l-20 p-r-20">
+            <div class="row">
+              <form>
+                <input type="text" name="">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="white-box p-l-20 p-r-20">
+            <div class="row">
+              <form>
+                <input type="text" name="">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="white-box p-l-20 p-r-20">
+            <div class="row">
+              <form>
+                <input type="text" name="">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
       
       
     <!-- /.container-fluid -->

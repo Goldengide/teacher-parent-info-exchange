@@ -53,8 +53,16 @@
                 <dt style="text-align: left; white-space: normal;">Class: </dt> <dd>{{ strtoupper($child->classTable($child->class_id)->name) }}</dd> <br></br>
 
                 <dt style="text-align: left; white-space: normal;">Teacher </dt> <dd> {{ $child->classTable($child->class_id)->teacher->fullname }}<a href="{{url('/parent/teacher/profile/'. $child->classTable($child->class_id)->teacher->id)}}"><i class="icon icon-user"></i></a></dd> <br></br>
-                @if($showResult)
-                <dt style="text-align: left; white-space: normal;"><a href="{{ url('/parent/child/result/'.$child->id)}}">Check Result</a></dt> <br></br>
+                <?php 
+
+                    $season = DB::table('seasons')->where('current', true)->first();
+                    $checkIfResultIsOut = DB::table('student_summaries')
+                                            ->where('student_id', $child->id)
+                                            ->where('season_id', $season->id)
+                                            ->count();
+                ?>
+                @if($checkIfResultIsOut != 0)
+                    <dt style="text-align: left; white-space: normal;"><a href="{{ url('/parent/child/result/'.$child->id)}}">See Result</a></dt> <br></br>
                 @endif
 
               </dl>
@@ -64,7 +72,7 @@
         <div class="col-sm-12 col-md-4">
           <div class="white-box p-l-20 p-r-20">
             <div class="row">
-              <dl class="dl-horizontal">
+              <dl class="dl-vertical">
                 
                 <dt style="text-align: left; white-space: normal;">My Name: </dt> <dd><a href="{{ url('/teacher/parent/profile/'. $child->parent($child->id)) }}">{{ $child->parent_name }}</a></dd> <br></br>
 

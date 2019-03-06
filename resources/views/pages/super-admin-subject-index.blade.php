@@ -5,7 +5,11 @@
     <div class="container-fluid">
       <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">...</h4>
+          <h4 class="page-title">
+            @if(isset($results) && $results == true)
+              {{strtoupper($class->name)}}
+            @endif
+          </h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
@@ -67,12 +71,12 @@
                           <a href="{{url('super-admin/subject/edit/'. $subject->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a>
                       @else
                         
-                          <span class="text-default">
-                            @if($subject->result($class->id, $subject->id, $season->id)->times_uploaded > 0)
-                              [{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]  | 
-                            @endif
-                          </span>
-                      <a href="{{url('teacher/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
+                        @if($subject->result($class->id, $subject->id, $season->id)->times_uploaded > 0)
+                          <span class="text-default">[{{$subject->result($class->id, $subject->id, $season->id)->times_uploaded}}]  |</span>
+                          <a href="{{url('super-admin/result/view/' .$season->id. '/'. $class->id. '/' .$subject->id )}}" class="text-info" title="View Result"><i class="icon icon-eye"></i></a>
+                        @else
+                          Not yet Uploaded
+                        @endif
                       
                       @endif
                     </td> 
