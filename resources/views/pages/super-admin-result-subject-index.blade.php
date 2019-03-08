@@ -21,6 +21,16 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
+            <h3 class="box-title m-b-0">
+              <form method="post" action="{{url('super-admin/result/process')}}">
+                {{ csrf_field()}}
+                <input type="hidden" name="class_id", value="{{$class->name}}">
+                <input type="hidden" name="season_id", value="{{}}">
+                <input type="hidden" name="class_id", value="{{}}">
+                <input type="hidden" name="class_id", value="{{}}">
+                <button class="btn btn-md btn-info" type="submit">Process Result</button>
+              </form>
+            </h3>
             <h3 class="box-title m-b-0">Subjects</h3>
             @if(Session::has('message'))
 

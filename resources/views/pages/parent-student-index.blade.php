@@ -21,7 +21,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
-            <h3 class="box-title m-b-0">Parent</h3>
+            <h3 class="box-title m-b-0">My Children</h3>
             @if(Session::has('message'))
 
               <p class="{{session('style')}}">{{session('message')}}</p>
@@ -32,18 +32,14 @@
               <thead>
                 <tr>
                   <th>S/N</th>
-                  <th>Parent Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
+                  <th>Child's Name</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
                   <th>S/N</th>
-                  <th>Parent Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
+                  <th>Child's Name</th>
                   <th>Action</th>
                 </tr>
               </tfoot>
@@ -51,14 +47,12 @@
                 @if(count($parents) < 1)
                   <td colspan="5">No teacher data has been uploaded so far. Please upload</td>
                 @else
-                  @foreach($parents as $parent)
+                  @foreach($children as $child)
                   <tr>  <?php $sn++; ?>
                     <td>{{$sn}}</td>
-                    <td>{{$parent->fullname}}</td>
-                    <td>{{$parent->email}}</td>
-                    <td>{{$parent->phone}}</td>
+                    <td>{{$child->student_name}}</td>
                     <td>
-                      <a href="{{url('teacher/parent/profile/'. $parent->id)}}" class="text-primary"><i class="icon icon-user"></i></a>
+                      <a href="{{url('parent/child/profile/'. $child->id)}}" class="text-primary"><i class="icon icon-eye"></i></a>
                       <!-- <a href="{{url('super-admin/parent/edit/'. $parent->id)}}" class="text-primary"><i class="icon icon-pencil"></i></a> -->
                     </td> 
                     

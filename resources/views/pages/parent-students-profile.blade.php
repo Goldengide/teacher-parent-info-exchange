@@ -52,7 +52,12 @@
 
                 <dt style="text-align: left; white-space: normal;">Class: </dt> <dd>{{ strtoupper($child->classTable($child->class_id)->name) }}</dd> <br></br>
 
-                <dt style="text-align: left; white-space: normal;">Teacher </dt> <dd> {{ $child->classTable($child->class_id)->teacher->fullname }}<a href="{{url('/parent/teacher/profile/'. $child->classTable($child->class_id)->teacher->id)}}"><i class="icon icon-user"></i></a></dd> <br></br>
+                <dt style="text-align: left; white-space: normal;">Teacher </dt> <dd> {{ ($child->classTable($child->class_id)->teacher($child->classTable($child->class_id)->teacher_id)->fullname) }}
+                  <a href="{{url('/parent/teacher/profile/'. $child->classTable($child->class_id)->teacher($child->classTable($child->class_id)->teacher_id)->id)}}">
+                    <i class="icon icon-user"></i> 
+                    <i class="icon icon-envelope"></i>
+                  </a>
+                </dd> <br></br>
                 <?php 
 
                     $season = DB::table('seasons')->where('current', true)->first();
@@ -86,6 +91,8 @@
         </div>
       </div>
       <!-- /.row -->
+
+      
       
       
     <!-- /.container-fluid -->

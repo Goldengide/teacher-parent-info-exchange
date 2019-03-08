@@ -95,5 +95,11 @@ class ParentController extends Controller
         }
     }
 
+    public function children() {
+        $children = Student::where('parent_name', Auth::user()->fullname)->get();
+        $countChildren = Student::where('parent_name', Auth::user()->fullname)->count();
+        return view('pages.parent-students-index', compact('children', 'countChildren'));
+    }
+
    
 }

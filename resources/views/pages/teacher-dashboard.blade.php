@@ -27,16 +27,21 @@
           </div>
         </div>
 
+
         <div class="col-md-3 col-lg-3 col-sm-6">
           <div class="white-box">
             <div class="row">
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary">{{$noOfSubjects}}</h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{ url('/teacher/subjects')}}">GO</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Subjects</h4>
+                    <h4 class="text-muted text-center text-info vb">Upload Result</h4>
+                  </div>
+
+                  <div class="col-xs-12">
+                    <!-- <h3 class="counter text-center m-t-15 text-primary"><i class="icon icon-book"></i></h3> -->
                   </div>
                 </div>
               </div>
@@ -50,10 +55,10 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{ url('/teacher/subjects')}}">GO</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{ url('/teacher/message/new')}}">GO</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Upload Result</h4>
+                    <h4 class="text-muted text-center text-info vb">Message Admin</h4>
                   </div>
 
                   <div class="col-xs-12">

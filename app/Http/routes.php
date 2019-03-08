@@ -28,10 +28,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'parent'], function() {
 // 
 	Route::get('/dashboard', 'ParentController@dashboard');
 	Route::get('/child/profile', 'ParentController@dashboard');
-	// Route::get('/child/profile/{id}', 'ParentController@dashboard');
+	Route::get('/child/profile/{id}', 'ParentController@viewChild');
+	Route::get('/children', 'ParentController@children');
 	Route::get('/child/result/{id}', 'ParentController@viewChildResult');
 	Route::post('/child/profile/pics', 'ParentController@profilePicsUpdateAction');
 	Route::get('/teacher/profile/{id}', 'ParentController@teacherProfile');
+	
+	Route::group(['prefix' => 'message'], function() {
+		Route::post('/send', 'SMSController@sendParentMessage');
+	});
 
 });
 
@@ -82,6 +87,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 
 	});
 
+	Route::group(['prefix' => 'message'], function() {
+		Route::post('/send', 'SMSController@sendTeacherMessage');
+	});
+
 });
 
 
@@ -114,7 +123,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
 	// Students 
 	Route::get('/students/all', 'AdminController@students');
-	Route::get('/students/{id}', 'AdminController@studentsByClass');
+	Route::get('/students/{classId}', 'AdminController@studentsByClass');
 	Route::get('/student/upload', 'AdminController@uploadStudentsPage');
 	Route::post('/student/upload', 'AdminController@uploadStudentsAction');
 	Route::get('/student/new', 'AdminController@addStudentPage');
@@ -177,6 +186,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	Route::get('/result/details/{id}', 'AdminController@viewResult');
 	Route::get('/result/edit/{id}', 'AdminController@editResult');
 	Route::post('/result/edit', 'AdminController@editResultAction');
+	
+	Route::post('/result/process', 'AdminController@processStudentResult');
 
 
 	// Template download 
@@ -188,6 +199,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 		Route::get('/result/{seasonId}/{classId}/{subjectId}/{result}.csv', 'DownloadController@resultTemplate');
 
 
+	});
+
+
+	// Message
+	Route::group(['prefix' => 'message'], function() {
+		Route::post('/compose', 'SMSController@sendAdminMessagePage');
+		Route::post('/send', 'SMSController@sendAdminMessage');
 	});
 
 

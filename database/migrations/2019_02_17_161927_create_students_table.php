@@ -22,6 +22,7 @@ class CreateStudentsTable extends Migration
             $table->integer('entry_season_id');
             $table->integer('exit_season_id')->default(0);
             $table->tinyInteger('graduated')->default(0);
+            $table->tinyInteger('graduating')->default(0);
             $table->string('profile_pics');
             $table->string('birthday');
             $table->string('gender');

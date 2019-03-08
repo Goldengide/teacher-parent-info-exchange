@@ -23,7 +23,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">{{$noOfTeachers}}</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('super-admin/teachers')}}">{{$noOfTeachers}}</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Teachers</h4>
@@ -40,7 +40,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="">{{$noOfStudents}}</a></h3>
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/super-admin/students/all')}}">{{$noOfStudents}}</a></h3>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Students in School</h4>
@@ -52,6 +52,23 @@
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-6">
+          <div class="white-box">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="col-in row">
+                  <div class="col-xs-12">
+                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/super-admin/result/session')}}">Go</a></h3>
+                  </div>
+                  <div class="col-xs-12">
+                    <h4 class="text-muted text-center text-info vb">Check Results</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-3 col-lg-3 col-sm-6">
           <div class="white-box">
             <div class="row">
               <div class="col-xs-12">
@@ -83,7 +100,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         
       </div>
@@ -98,7 +115,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">Click to see</a></h5>
+                    <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('/results/summary')}}">Click to see</a></h5>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Best Students</h4>
@@ -119,7 +136,7 @@
                     <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">0%</a></h3>
                   </div>
                   <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Best Overall Score</h4>
+                    <h4 class="text-muted text-center text-info vb">Overall Best Student</h4>
                   </div>
                 </div>
               </div>
@@ -133,28 +150,16 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h5 class="counter text-center m-t-15 text-primary"><a href=""></a></h5>
+                    <h5 class="counter text-center m-t-15 text-primary">
+                      @if($mostEffectiveTeacher == "")
+                        ??
+                      @else
+                        <a href="{{ url('super-admin/teacher/profile'.$mostEffectiveTeacher->id)}}">{{ $mostEffectiveTeacher->fullname}}</a>
+                      @endif
+                    </h5>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Most Effective Teacher</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-3 col-lg-3 col-sm-6">
-          <div class="white-box">
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="col-in row">
-                  <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/super-admin/result/session')}}">Go</a></h3>
-                  </div>
-                  <div class="col-xs-12">
-                    <h4 class="text-muted text-center text-info vb">Check Results</h4>
                   </div>
                 </div>
               </div>

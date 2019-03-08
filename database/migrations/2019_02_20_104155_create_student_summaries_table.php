@@ -14,6 +14,7 @@ class CreateStudentSummariesTable extends Migration
     {
         Schema::create('student_summaries', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('class_id');
             $table->integer('student_id');
             $table->integer('season_id');
             $table->integer('percentage');

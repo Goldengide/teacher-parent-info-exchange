@@ -30,12 +30,26 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="white-box">
+            @if(isset($isAllResultsHasBeenUploadedForEachStudent) && $isAllResultsHasBeenUploadedForEachStudent)
+              <h3 class="box-title m-b-0">
+                <form method="post" action="{{url('super-admin/result/process')}}">
+                  {{ csrf_field()}}
+                  <input type="hidden" name="class_id", value="{{$class->id}}">
+                  <input type="hidden" name="season_id", value="{{$season->id}}">
+                  <button class="btn btn-md btn-info" type="submit">Process Result</button>
+                </form>
+              </h3>
+            @endif
             <h3 class="box-title m-b-0">Subjects</h3>
             @if(!isset($results) || empty($results))
               
               <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/upload')}}">Upload Subjects</a></p>
               <p class="text-muted m-b-30"><a href="{{url('/super-admin/subject/new')}}">Add New Subject</a></p>
-            
+            @else
+              <p class="text-muted m-b-20">
+                <span class="text-info">Uploaded Result: {{$uploadedSubjectsResult}}/{{$overallSubjects}}</span>
+                <span class="text-primary">(At complete uploading of results, a button will show up to summarize all students final report)</span>
+              </p>
             @endif
             @if(Session::has('message'))
 
