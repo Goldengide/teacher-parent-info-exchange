@@ -18,8 +18,8 @@ class CreateStudentSummariesTable extends Migration
             $table->integer('student_id');
             $table->integer('season_id');
             $table->integer('percentage');
-            $table->string('best_subject');
-            $table->string('worse_subject');
+            $table->string('best_score');
+            $table->string('worse_score');
             $table->string('comments');
             $table->timestamps();
         });

@@ -11,7 +11,7 @@
           <!-- <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a> -->
           <ol class="breadcrumb">
             <?php $currentSeason = DB::table('seasons')->where('current', 1)->first(); ?>
-            <li><a href="{{ url('teacher/dashboard')}}">Dashboard</a></li>
+            <li><a href="{{ url('super-admin/dashboard')}}">Dashboard</a></li>
             <li class="active">{{$currentSeason->session}} |{{$currentSeason->term_no}}|</li>
           </ol>
         </div>

@@ -64,6 +64,22 @@ class TeacherController extends Controller
     	return view('pages.teacher-upload-students-info');
     }
 
+    public function viewStudentResult($seasonId, $classId, $studentId) {
+        $student = Student::where('id', $studentId)->first();
+        $studentSummary = StudentSummary::where('season_id', $seasonId)
+                                        ->where('class_id', $classId)
+                                        ->where('student_id', $studentId)
+                                        ->first();
+        $results =  Result::where('season_id', $seasonId)
+                                ->where('class_id', $classId)
+                                ->where('student_id', $studentId)
+                                ->get();
+
+        return view('pages.teacher-result-student-index', compact('results', 'studentSummary', 'student'));
+
+    }
+
+
     public function uploadStudentsAction(Request $request) {
         $teacherId = Auth::user()->id;
         $class = ClassTable::where('teacher_id', $teacherId)->first();
@@ -205,8 +221,16 @@ class TeacherController extends Controller
 
     public function viewStudent($id) {
         $student = Student::where('id', $id)->first();
+        $season = Season::where('current', true)->first();
+        $processedResult = StudentSummary::where('class_id', $student->class_id)->where('season_id', $season->id)->count();
+        if($processedResult > 0) {
+            $isProcessedResult = true;
+        }
+        else {
+            $isProcessedResult = false;
+        }
         // $noOfStudents = Student::where('class_id', $class->id)->count();     // $lastSemesterPerformance;
-        return view('pages.teacher-students-profile', compact('student'));
+        return view('pages.teacher-students-profile', compact('student', 'isProcessedResult', 'season'));
     }
 
 

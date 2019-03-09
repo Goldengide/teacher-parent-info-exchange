@@ -137,19 +137,19 @@
                 <ul class="nav" id="side-menu">
                     
                     <li class="nav-small-cap m-t-10">--- Main Menu</li>
-                    <li> <a href="{{url("tip/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
+                    <li> <a href="{{url("parent/dashboard")}}" class="waves-effect active"><i class="zmdi zmdi-view-dashboard zmdi-hc-fw fa-fw" ></i> Dashboard </a>
                     </li>
                   
                     <li>
-                        <a href="inbox.html" class="waves-effect">
+                        <a href="{{ url('#') }}" class="waves-effect">
                             <i class="zmdi zmdi-apps zmdi-hc-fw fa-fw"></i> 
                             <span class="hide-menu">Assessments</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">
+                        <a href="{{ url('#') }}" class="waves-effect">
                             <i class="icon icon-envelope"></i> 
-                            <span class="hide-menu">Subjects 
+                            <span class="hide-menu">Messages 
                                     <span class="label label-rouded label-danger pull-right">2</span>
 
                             </span>

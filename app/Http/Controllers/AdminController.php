@@ -410,9 +410,7 @@ class AdminController extends Controller
         // get format for this one too //when is that? it should be now
     }
 
-    public function bestStudents() {
-
-    }
+    
 
 
 
@@ -427,6 +425,7 @@ class AdminController extends Controller
     	$parent = User::where('id', $id)->first();
         $countChildren = Student::where('parent_name', $parent->fullname)->count();
         $students = Student::where('parent_name', $parent->fullname)->get();
+        
     	return view('pages.super-admin-parent-profile', compact('parent', 'countChildren', 'students'));
     }
 
@@ -434,6 +433,19 @@ class AdminController extends Controller
     	$teacher = User::where('id', $id)->first();
         $class = ClassTable::where('teacher_id', $teacher->id)->first();
     	return view('pages.super-admin-teacher-profile', compact('teacher', 'class'));
+    }
+
+    public function studentProfile($id) {
+        $student = Student::where('id', $id)->first();
+        $season = Season::where('current', true)->first();
+        $processedResult = StudentSummary::where('class_id', $student->class_id)->where('season_id', $season->id)->count();
+        if($processedResult > 0) {
+            $isProcessedResult = true;
+        }
+        else {
+            $isProcessedResult = false;
+        }
+        return view('pages.super-admin-teacher-students-profile', compact('student', 'isProcessedResult', 'season'));
     }
 
     
@@ -691,6 +703,15 @@ class AdminController extends Controller
         // return $check1;
         $overallSubjects = count($check1);
         $uploadedSubjectsResult = count($check2);
+
+        $processedResult = StudentSummary::where('class_id', $classId)->where('season_id', $seasonId)->count();
+        if($processedResult > 0) {
+            $isProcessedResult = true;
+        }
+        else {
+            $isProcessedResult = false;
+        }
+
         if ($overallSubjects == $uploadedSubjectsResult) {
             $isAllResultsHasBeenUploadedForEachStudent = 1;
         }
@@ -699,7 +720,7 @@ class AdminController extends Controller
         }
         // return $isAllResultsHasBeenUploadedForEachStudent;
 
-        return view('pages.super-admin-subject-index', compact('subjects', 'class', 'season', 'results', 'isAllResultsHasBeenUploadedForEachStudent', 'overallSubjects', 'uploadedSubjectsResult'));
+        return view('pages.super-admin-subject-index', compact('subjects', 'class', 'season', 'results', 'isAllResultsHasBeenUploadedForEachStudent', 'overallSubjects', 'uploadedSubjectsResult', 'isProcessedResult'));
     }
 
     public function resultIndex($seasonId, $classId, $subjectId) {
@@ -716,6 +737,29 @@ class AdminController extends Controller
         $resultAverage = ($resultSumAssessment + $resultSumExam)/$resultCount;
         $resultAverage = round($resultAverage);
         return view('pages.super-admin-result-index', compact('results', 'subject', 'class', 'season', 'resultAverage', 'resultInfo'));
+    }
+
+    public function resultSummary() {
+
+    }
+
+    public function bestStudents() {
+
+    }
+
+    public function viewStudentResult($seasonId, $classId, $studentId) {
+        $student = Student::where('id', $studentId)->first();
+        $studentSummary = StudentSummary::where('season_id', $seasonId)
+                                        ->where('class_id', $classId)
+                                        ->where('student_id', $studentId)
+                                        ->first();
+        $results =  Result::where('season_id', $seasonId)
+                                ->where('class_id', $classId)
+                                ->where('student_id', $studentId)
+                                ->get();
+
+        return view('pages.super-admin-result-student-index', compact('results', 'studentSummary', 'student'));
+
     }
 
     public function uploadResult($seasonId, $classId, $subjectId) {
@@ -912,24 +956,50 @@ class AdminController extends Controller
             return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
         }
     }
+    // public function getStudentsResults($studentId) {
+    //     // $result = 
+    // }
+
     public function processStudentResult(Request $request) {
-        $studentObject = Result::where('season_id', $request->season_id)
-                            ->where('class_id', $request->class_id);
-        $students = Student::where('class_id', $request->class_id)->get();
-        foreach ($students as $student) {
-            $bestResult = $studentObject->where('student_id', $student->id);
-            $operation = DB::table('student_summaries')
-                            ->insert([
-                                'class_id' => $request->class_id,
-                                'season_id' => $request->season_id,
-                                'student_id' => $student->id,
-                                'overall_percentage' => $bestResult->sum('total')/$bestResult->count(),
-                                'overall_percentage' => $bestResult->sum('total')/$bestResult->count(),
-                                'best_score' => $bestResult->max('total'),
-                                'worst_score' => $bestResult->min('total')
-                            ]);
-            
+        $insertArray = array();
+        $studentCount = Student::where('class_id', $request->class_id)->count();
+        $studentResults = Result::where('season_id', $request->season_id)
+                                ->where('class_id', $request->class_id)
+                                ->orderBy('subject_id', 'class_id', 'student_id')
+                                ->take($studentCount)
+                                ->get();
+        foreach ($studentResults as $studentResult) {
+            $insertArray[] =  $studentResult->summary($request->season_id, $request->class_id, $studentResult->student_id);
         }
+        $operation = DB::table('student_summaries')->insert($insertArray);
+
+        if ($operation) {
+            return redirect()->back()->with(['message' => 'Result Successfully Processed', 'style' => 'alert-success']);
+        }
+        else {
+            return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
+        }
+
+
+
+    }
+    public function processEachStudentResult(Request $request) {
+        $studentObject = Result::where('season_id', $request->season_id)
+                            ->where('class_id', $request->class_id)
+                            ->where('student_id', $student->id);
+        $students = Student::where('class_id', $request->class_id)->get();
+        
+        $operation = DB::table('student_summaries')
+                        ->insert([
+                            'class_id' => $request->class_id,
+                            'season_id' => $request->season_id,
+                            'student_id' => $request->student_id,
+                            'percentage' => $studentObject->sum('total')/$studentObject->count(),
+                            'best_score' => $studentObject->max('total'),
+                            'worse_score' => $studentObject->min('total')
+                        ]);
+            
+        
 
         if ($operation) {
             return redirect()->back()->with(['message' => 'Result Successfully Processed', 'style' => 'alert-success']);
@@ -938,6 +1008,7 @@ class AdminController extends Controller
             return redirect()->back()->with(['message' => 'Ooops Something went wrong', 'style' => 'alert-danger']);
         }
     }
+
 
 
     public function assignTeacherClassPage($id) {

@@ -1,4 +1,4 @@
-@extends('layouts.teachers')
+@extends('layouts.super-admin')
 @section('content')
   <div id="page-wrapper">
     <div class="container-fluid">
@@ -54,10 +54,10 @@
                 <dt style="text-align: left; white-space: normal;">Phone: </dt> <dd>{{ $student->phone }}</dd> <br><br>
 
                 <dt style="text-align: left; white-space: normal;">Email: </dt> <dd>{{ $student->email }}</dd> <br></br>
-
                 @if($isProcessedResult)
-                  <a href="{{ url('teacher/result/student/'. $season->id .'/'. $student->class_id .'/'. $student->id) }}">Check Result</a>
+                  <a href="{{ url('super-admin/result/student/'. $season->id .'/'. $student->class_id .'/'. $student->id) }}">Check Result</a>
                 @endif
+
               </dl>
             </div>
           </div>

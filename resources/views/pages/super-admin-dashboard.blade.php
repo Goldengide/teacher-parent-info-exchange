@@ -115,7 +115,7 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('/results/summary')}}">Click to see</a></h5>
+                    <h5 class="counter text-center m-t-15 text-primary"><a href="{{url('super-admin/result/summary')}}">Click to see</a></h5>
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Best Students</h4>
@@ -133,7 +133,11 @@
               <div class="col-xs-12">
                 <div class="col-in row">
                   <div class="col-xs-12">
-                    <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/teacher/students')}}">0%</a></h3>
+                    @if(!isset($bestStudent))
+                      <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('/super-admin/#')}}">??</a></h3>
+                    @else
+                      <h3 class="counter text-center m-t-15 text-primary"><a href="{{url('super-admin/teacher/student/'. $bestStudent->id)}}">{{$bestStudent->student_name}}</a></h3>
+                    @endif
                   </div>
                   <div class="col-xs-12">
                     <h4 class="text-muted text-center text-info vb">Overall Best Student</h4>
@@ -154,7 +158,7 @@
                       @if($mostEffectiveTeacher == "")
                         ??
                       @else
-                        <a href="{{ url('super-admin/teacher/profile'.$mostEffectiveTeacher->id)}}">{{ $mostEffectiveTeacher->fullname}}</a>
+                        <a href="{{ url('super-admin/teacher/profile/'.$mostEffectiveTeacher->id)}}">{{ $mostEffectiveTeacher->fullname}}</a>
                       @endif
                     </h5>
                   </div>

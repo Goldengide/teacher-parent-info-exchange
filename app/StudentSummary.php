@@ -13,5 +13,8 @@ class StudentSummary extends Model
     	return $bestStudent;
     }
 
-    public function getOverallbestStudents($classId, $seasonId)  {}
+    public function student($studentId)  {
+    	$student = Student::where('id', $studentId)>first();
+    	return $student;
+    }
 }

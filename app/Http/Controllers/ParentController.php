@@ -46,8 +46,31 @@ class ParentController extends Controller
         $result = $StudentSummary::where('student_id', $studentId)->where('season_id', $seasonId)->count();
         $countChildren = Student::where('parent_name', Auth::user()->fullname)->count();
         $child = Student::where('student_id', $studentId);
-        return view('pages.parent-students-profile', compact('child', 'countChildren'));
+        $processedResult = StudentSummary::where('class_id', $student->class_id)->where('season_id', $season->id)->count();
+        if($processedResult > 0) {
+            $isProcessedResult = true;
+        }
+        else {
+            $isProcessedResult = false;
+        }
+        return view('pages.parent-students-profile', compact('child', 'countChildren', 'isProcessedResult', 'season'));
     }
+
+    public function viewStudentResult($seasonId, $classId, $studentId) {
+        $student = Student::where('id', $studentId)->first();
+        $studentSummary = StudentSummary::where('season_id', $seasonId)
+                                        ->where('class_id', $classId)
+                                        ->where('student_id', $studentId)
+                                        ->first();
+        $results =  Result::where('season_id', $seasonId)
+                                ->where('class_id', $classId)
+                                ->where('student_id', $studentId)
+                                ->get();
+
+        return view('pages.parent-result-student-index', compact('results', 'studentSummary', 'student'));
+
+    }
+
     public function logAComplaintToThePoprietor() {}
     public function viewChildResult($id) {
 

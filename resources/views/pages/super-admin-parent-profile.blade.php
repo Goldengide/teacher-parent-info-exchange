@@ -1,4 +1,4 @@
-@extends('layouts.teachers')
+@extends('layouts.super-admin')
 @section('content')
   <div id="page-wrapper">
     <div class="container-fluid">
@@ -42,7 +42,7 @@
 
                   @foreach($students as $student)
                     <?php $sn++; ?>
-                    <dt style="text-align: left; white-space: normal;">{{$sn}}</dt> <dd><a href="{{ url('/teacher/students/profile/'. $student->id) }}">See {{ $student->student_name }} Profile</a></dd> <br></br>
+                    <dt style="text-align: left; white-space: normal;">{{$sn}}</dt> <dd><a href="{{ url('/super-admin/student/profile/'. $student->id) }}">See {{ $student->student_name }} Profile</a></dd> <br></br>
 
                     
 

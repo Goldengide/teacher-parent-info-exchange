@@ -23,6 +23,7 @@ class CreateResultsTable extends Migration
             $table->integer('exam_score');
             $table->integer('total');
             $table->tinyInteger('approved');
+            $table->tinyInteger('processed');
             $table->integer('times_uploaded');
             $table->timestamps();
         });

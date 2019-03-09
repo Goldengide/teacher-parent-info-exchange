@@ -46,13 +46,13 @@
           </div>
         </div>
         
-        <div class="form-group m-b-0">
+        <!-- <div class="form-group m-b-0">
           <div class="col-sm-12 text-center">
             <p>Don't have an account? <a href="register.html" class="text-primary m-l-5"><b>Sign Up</b></a></p>
           </div>
-        </div>
+        </div> -->
       </form>
-      <form class="form-horizontal" id="recoverform" action="index.html">
+      <form class="form-horizontal" id="recoverform" action="{{url('/password/reset')}}">
         <div class="form-group ">
           <div class="col-xs-12">
             <h3>Recover Password</h3>
@@ -61,7 +61,7 @@
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Email">
+            <input class="form-control" type="email" required="" placeholder="Email">
           </div>
         </div>
         <div class="form-group text-center m-t-20">

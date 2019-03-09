@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'parent'], function() {
 	Route::get('/child/result/{id}', 'ParentController@viewChildResult');
 	Route::post('/child/profile/pics', 'ParentController@profilePicsUpdateAction');
 	Route::get('/teacher/profile/{id}', 'ParentController@teacherProfile');
+	Route::get('/result/student/{seasonId}/{classId}/{studentId}', 'ParentController@viewStudentResult');
 	
 	Route::group(['prefix' => 'message'], function() {
 		Route::post('/send', 'SMSController@sendParentMessage');
@@ -86,6 +87,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 
 
 	});
+	Route::get('/result/student/{seasonId}/{classId}/{studentId}', 'TeacherController@viewStudentResult');
 
 	Route::group(['prefix' => 'message'], function() {
 		Route::post('/send', 'SMSController@sendTeacherMessage');
@@ -93,7 +95,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'teacher'], function() {
 
 });
 
-
+	
 # SuperAdmin module
 Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 
@@ -188,6 +190,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'super-admin'], function() {
 	Route::post('/result/edit', 'AdminController@editResultAction');
 	
 	Route::post('/result/process', 'AdminController@processStudentResult');
+
+	Route::get('/result/summary', 'AdminController@resultSummary');
+	Route::get('/result/summary/best', 'AdminController@bestStudents');
+
+	Route::get('/result/student/{seasonId}/{classId}/{studentId}', 'AdminController@viewStudentResult');
 
 
 	// Template download 
